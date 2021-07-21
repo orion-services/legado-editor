@@ -7,6 +7,7 @@
   <script src="./node_modules/blockly/blocks_compressed.js"></script>
   <script src="./node_modules/blockly/javascript_compressed.js"></script>
   <script src="./node_modules/blockly/msg/en.js"></script>
+  <script src="/appengine/storage.js"></script>
 
   <style>
     body {
@@ -25,6 +26,14 @@
 
   <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure/web/code-generators">Code Generators</a> and <a href="https://developers.google.com/blockly/guides/app-integration/running-javascript">Running JavaScript</a>.</p>
 
+  <p>
+    <button onclick="BlocklyStorage.backupOnUnload()">backup antes de recarregar</button>
+  </p>
+
+  <p>
+    <button onclick="BlocklyStorage.restoreBlocks()">após recarregar, recuperar blocos</button>
+  </p>
+  
   <p>
     <button onclick="showCode()">Show JavaScript</button>
     <button onclick="runCode()">Run JavaScript</button>
@@ -120,6 +129,11 @@
         {media: 'https://unpkg.com/blockly/media/',
         maxBlocks: 10,
          toolbox: document.getElementById('toolbox')});
+
+    // An href with #key triggers an AJAX call to retrieve saved blocks.
+    if ('BlocklyStorage' in window && window.location.hash.length > 1) {
+      BlocklyStorage.retrieveXml(window.location.hash.substring(1));
+    }
 
   function onchange(event) {
       document.getElementById('capacity').textContent =
