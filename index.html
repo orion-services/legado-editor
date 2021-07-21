@@ -30,9 +30,9 @@
     <button onclick="BlocklyStorage.backupOnUnload()">backup antes de recarregar</button>
   </p>
 
-  <p>
-    <button onclick="BlocklyStorage.restoreBlocks()">após recarregar, recuperar blocos</button>
-  </p>
+  <button onclick="reloadPage()">
+    Click
+    </button>
   
   <p>
     <button onclick="showCode()">Show JavaScript</button>
@@ -125,6 +125,21 @@
   </xml>
 
   <script>
+
+window.onload = function() {
+  var reloaded = sessionStorage.getItem("reloaded");
+  if(reloaded){
+      sessionStorage.removeItem("reloaded");
+      BlocklyStorage.restoreBlocks();
+    }
+}
+
+    function reloadPage(){
+      sessionStorage.setItem("reloaded", "true");
+      window.location.reload();
+    }
+
+
     var demoWorkspace = Blockly.inject('blocklyDiv',
         {media: 'https://unpkg.com/blockly/media/',
         maxBlocks: 10,
