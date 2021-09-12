@@ -8,6 +8,7 @@
  * @fileoverview Loading and saving blocks with localStorage and cloud storage.
  * @author q.neutron@gmail.com (Quynh Neutron)
  */
+
 'use strict';
 
 // Create a namespace.
@@ -24,6 +25,8 @@ BlocklyStorage.backupBlocks_ = function(workspace) {
     // Gets the current URL, not including the hash.
     var url = window.location.href.split('#')[0];
     window.localStorage.setItem(url, Blockly.Xml.domToText(xml));
+
+
   }
 };
 
@@ -31,23 +34,85 @@ BlocklyStorage.backupBlocks_ = function(workspace) {
  * Bind the localStorage backup function to the unload event.
  * @param {Blockly.WorkspaceSvg=} opt_workspace Workspace.
  */
-BlocklyStorage.backupOnUnload = function(opt_workspace) {
+BlocklyStorage.backupOnUnload = async function(opt_workspace) {
   var workspace = opt_workspace || Blockly.getMainWorkspace();
   window.addEventListener('unload',
       function() {BlocklyStorage.backupBlocks_(workspace);}, false);
+      
+      globalURL = reloadPage();
+
+      console.log(globalURL);
 };
 
 /**
  * Restore code blocks from localStorage.
  * @param {Blockly.WorkspaceSvg=} opt_workspace Workspace.
  */
+// let globalURLL='<xml xmlns="https://developers.google.com/blockly/xml"><block type="math_arithmetic" id="La#gcHs$5h(h6Hp:;?vS" x="169" y="46"><field name="OP">ADD</field></block><block type="controls_if" id="#x6D$L8NW_87`jRlo5!j" x="63" y="137"></block></xml>';
+// console.log(globalURLL);
+// let globalURLAnt = (new URL(document.location)).hash;
+// let globalURL = globalURLAnt.replace("#", "");
+// console.log(globalURL);
+
+// console.log(data);
+// // expected output: "https://mozilla.org/?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B"
+// try {
+//   console.log(decodeURI(globalURL));
+//   // expected output: "https://mozilla.org/?x=шеллы"
+// } catch (e) { // catches a malformed URI
+//   console.error(e);
+// }
+
 BlocklyStorage.restoreBlocks = function(opt_workspace) {
   var url = window.location.href.split('#')[0];
   if ('localStorage' in window && window.localStorage[url]) {
     var workspace = opt_workspace || Blockly.getMainWorkspace();
     var xml = Blockly.Xml.textToDom(window.localStorage[url]);
     Blockly.Xml.domToWorkspace(xml, workspace);
+    console.log(window.localStorage[url]);
+    
   }
+};
+
+
+
+//aqui virá a url que seta a configuração dos blocos
+BlocklyStorage.coopBlocks = async function(opt_workspace) {
+    var urlblock = window.location.href.split('#')[0];
+    var data
+    var url = "http://localhost:8080/editor/api/v1/updateCode"
+
+        const getData = async () => {
+          const response = await fetch('http://localhost:8080/editor/api/v1/updateCode', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Accept': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify({
+              textCode:window.localStorage[urlblock],
+              id:1
+            }),
+          });
+
+          console.info("Response:", response)
+          // do what ever you want here 
+        
+        };
+      getData()
+
+  //GET
+      let loadURL = await fetch("http://localhost:8080/editor/api/v1/loadCode/1")
+        .then(response => response.text())
+        console.log(loadURL)
+
+      if ('localStorage' in window && loadURL) {
+        var workspace = opt_workspace || Blockly.getMainWorkspace();
+        var xml = Blockly.Xml.textToDom(loadURL);
+        Blockly.Xml.domToWorkspace(xml, workspace);
+        console.log(window.localStorage[urlblock]);
+        
+      }
 };
 
 /**

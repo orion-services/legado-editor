@@ -130,7 +130,9 @@ window.onload = function() {
   var reloaded = sessionStorage.getItem("reloaded");
   if(reloaded){
       sessionStorage.removeItem("reloaded");
-      BlocklyStorage.restoreBlocks();
+      //BlocklyStorage.restoreBlocks();
+      BlocklyStorage.coopBlocks();
+      //inserir codigo aqui
     }
 }
 
@@ -164,6 +166,12 @@ window.onload = function() {
       var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
       alert(code);
     }
+
+    function myUpdateFunction(event) {
+      var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+      document.getElementById('textarea').value = code;
+    }
+    demoWorkspace.addChangeListener(myUpdateFunction);
 
     function runCode() {
       // Generate JavaScript code and run it.
