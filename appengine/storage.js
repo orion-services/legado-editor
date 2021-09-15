@@ -39,9 +39,9 @@ BlocklyStorage.backupOnUnload = async function(opt_workspace) {
   window.addEventListener('unload',
       function() {BlocklyStorage.backupBlocks_(workspace);}, false);
       
-      globalURL = reloadPage();
+      unloadURL = reloadPage();
 
-      console.log(globalURL);
+      console.log(unloadURL);
 };
 
 /**
@@ -70,7 +70,6 @@ BlocklyStorage.restoreBlocks = function(opt_workspace) {
     var xml = Blockly.Xml.textToDom(window.localStorage[url]);
     Blockly.Xml.domToWorkspace(xml, workspace);
     console.log(window.localStorage[url]);
-    
   }
 };
 
@@ -79,25 +78,33 @@ BlocklyStorage.restoreBlocks = function(opt_workspace) {
 //aqui virá a url que seta a configuração dos blocos
 BlocklyStorage.coopBlocks = async function(opt_workspace) {
     var urlblock = window.location.href.split('#')[0];
-    var data
-    var url = "http://localhost:8080/editor/api/v1/updateCode"
+
+      var details = {
+        textCode:window.localStorage[urlblock],
+        id:1
+      };
+      
+      var formBody = [];
+      for (var property in details) {
+        var encodedKey = encodeURIComponent(property);
+        var encodedValue = encodeURIComponent(details[property]);
+        formBody.push(encodedKey + "=" + encodedValue);
+      }
+      formBody = formBody.join("&");
 
         const getData = async () => {
           const response = await fetch('http://localhost:8080/editor/api/v1/updateCode', {
             method: 'POST',
+            mode: 'no-cors',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
-              'Accept': 'application/x-www-form-urlencoded'
+              'charset': 'utf-8',
+              'Accept': '*/*',
+              'connection':'keep-alive'
             },
-            body: JSON.stringify({
-              textCode:window.localStorage[urlblock],
-              id:1
-            }),
+            body: formBody,
           });
-
           console.info("Response:", response)
-          // do what ever you want here 
-        
         };
       getData()
 
