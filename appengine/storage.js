@@ -110,12 +110,13 @@ BlocklyStorage.coopBlocks = async function(opt_workspace) {
 
   //GET
       let loadURL = await fetch("http://localhost:8080/editor/api/v1/loadCode/1")
-        .then(response => response.text())
-        console.log(loadURL)
+        .then(response => response.json())
 
-      if ('localStorage' in window && loadURL) {
+        console.log(loadURL.textCode)
+
+      if ('localStorage' in window && loadURL.textCode) {
         var workspace = opt_workspace || Blockly.getMainWorkspace();
-        var xml = Blockly.Xml.textToDom(loadURL);
+        var xml = Blockly.Xml.textToDom(loadURL.textCode);
         Blockly.Xml.domToWorkspace(xml, workspace);
         console.log(window.localStorage[urlblock]);
         
