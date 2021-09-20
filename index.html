@@ -21,22 +21,21 @@
   </style>
 </head>
 <body>
-  <p>This is a simple demo of generating code from blocks and running
-  the code in a sandboxed JavaScript interpreter.</p>
+  <p>Editor</p>
 
-  <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure/web/code-generators">Code Generators</a> and <a href="https://developers.google.com/blockly/guides/app-integration/running-javascript">Running JavaScript</a>.</p>
 
   <p>
-    <button onclick="BlocklyStorage.backupOnUnload()">Save block state</button>
+    <button onclick="BlocklyStorage.backupOnUnload()">
+      Save block state</button>
   </p>
 
-  <button onclick="reloadPage()">
+  <button onclick="pageload()" >
     load block state
     </button>
   
   <p>
     <button onclick="showCode()">Show JavaScript</button>
-    <button onclick="runCode()">Run JavaScript</button>
+    <!-- <button onclick="runCode()">Run JavaScript</button> -->
   </p>
 
   <p><b>You have <span id="capacity"></span> block(s) left.</b></p>
@@ -128,17 +127,31 @@
 
 window.onload = function() {
   var reloaded = sessionStorage.getItem("reloaded");
+  var pageload = sessionStorage.getItem("pageload");
   if(reloaded){
       //sessionStorage.removeItem("reloaded");
       //BlocklyStorage.restoreBlocks();
       BlocklyStorage.coopBlocks();
-      BlocklyStorage.loadBlocks();
-      //inserir codigo aqui
+      alert('recarregado')
+      
     }
+  if(pageload){
+      //sessionStorage.removeItem("pageload");
+      //BlocklyStorage.restoreBlocks();
+      BlocklyStorage.loadBlocks();
+      //alert('carregado')
+      
+    }
+    
 }
 
     function reloadPage(){
       sessionStorage.setItem("reloaded", "true");
+      window.location.reload();
+    }
+
+    function pageload(){
+      sessionStorage.setItem("pageload", "true");
       window.location.reload();
     }
 

@@ -25,8 +25,8 @@ BlocklyStorage.backupBlocks_ = function(workspace) {
     // Gets the current URL, not including the hash.
     var url = window.location.href.split('#')[0];
     window.localStorage.setItem(url, Blockly.Xml.domToText(xml));
-
-
+    unloadURL = pageload();
+    
   }
 };
 
@@ -39,9 +39,7 @@ BlocklyStorage.backupOnUnload = async function(opt_workspace) {
   window.addEventListener('unload',
       function() {BlocklyStorage.backupBlocks_(workspace);}, false);
       
-      unloadURL = reloadPage();
-
-      console.log(unloadURL);
+      alert("salvo");
 };
 
 /**
@@ -113,6 +111,7 @@ BlocklyStorage.loadBlocks = async function(opt_workspace) {
       console.log(window.localStorage[urlblock]);
       
     }
+
 };
 
 /**
