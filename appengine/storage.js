@@ -48,21 +48,9 @@ BlocklyStorage.backupOnUnload = async function(opt_workspace) {
  * Restore code blocks from localStorage.
  * @param {Blockly.WorkspaceSvg=} opt_workspace Workspace.
  */
-// let globalURLL='<xml xmlns="https://developers.google.com/blockly/xml"><block type="math_arithmetic" id="La#gcHs$5h(h6Hp:;?vS" x="169" y="46"><field name="OP">ADD</field></block><block type="controls_if" id="#x6D$L8NW_87`jRlo5!j" x="63" y="137"></block></xml>';
-// console.log(globalURLL);
-// let globalURLAnt = (new URL(document.location)).hash;
-// let globalURL = globalURLAnt.replace("#", "");
-// console.log(globalURL);
 
-// console.log(data);
-// // expected output: "https://mozilla.org/?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B"
-// try {
-//   console.log(decodeURI(globalURL));
-//   // expected output: "https://mozilla.org/?x=шеллы"
-// } catch (e) { // catches a malformed URI
-//   console.error(e);
-// }
 
+//substuida por coopBlocks e loadBlocks
 BlocklyStorage.restoreBlocks = function(opt_workspace) {
   var url = window.location.href.split('#')[0];
   if ('localStorage' in window && window.localStorage[url]) {
@@ -72,8 +60,6 @@ BlocklyStorage.restoreBlocks = function(opt_workspace) {
     console.log(window.localStorage[url]);
   }
 };
-
-
 
 //aqui virá a url que seta a configuração dos blocos
 BlocklyStorage.coopBlocks = async function(opt_workspace) {
@@ -108,19 +94,25 @@ BlocklyStorage.coopBlocks = async function(opt_workspace) {
         };
       getData()
 
-  //GET
-      let loadURL = await fetch("http://localhost:8080/editor/api/v1/loadCode/1")
-        .then(response => response.json())
 
-        console.log(loadURL.textCode)
+};
 
-      if ('localStorage' in window && loadURL.textCode) {
-        var workspace = opt_workspace || Blockly.getMainWorkspace();
-        var xml = Blockly.Xml.textToDom(loadURL.textCode);
-        Blockly.Xml.domToWorkspace(xml, workspace);
-        console.log(window.localStorage[urlblock]);
-        
-      }
+BlocklyStorage.loadBlocks = async function(opt_workspace) {
+  var urlblock = window.location.href.split('#')[0];
+
+    //GET
+    let loadURL = await fetch("http://localhost:8080/editor/api/v1/loadCode/1")
+    .then(response => response.json())
+
+    console.log(loadURL.textCode)
+
+    if ('localStorage' in window && loadURL.textCode) {
+      var workspace = opt_workspace || Blockly.getMainWorkspace();
+      var xml = Blockly.Xml.textToDom(loadURL.textCode);
+      Blockly.Xml.domToWorkspace(xml, workspace);
+      console.log(window.localStorage[urlblock]);
+      
+    }
 };
 
 /**
