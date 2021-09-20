@@ -6,5 +6,4 @@ Cooperative editor for teaching programming in basic education
 
     npm install
 
-
-run with live server (vs code extension)
+    npm run start

@@ -94,13 +94,13 @@ BlocklyStorage.coopBlocks = async function(opt_workspace) {
 
         const getData = async () => {
           const response = await fetch('http://localhost:8080/editor/api/v1/updateCode', {
-            method: 'POST',
-            mode: 'no-cors',
+            method: 'PUT',
+            mode: 'cors',
             headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'charset': 'utf-8',
-              'Accept': '*/*',
-              'connection':'keep-alive'
+              'content-type': 'application/x-www-form-urlencoded',
+              'accept': '*/*',
+              'connection':'keep-alive',
+              'X-Requested-With': 'XMLHttpRequest'
             },
             body: formBody,
           });
