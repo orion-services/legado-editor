@@ -2,13 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Blockly Demo: Generating JavaScript</title>
+  <title>Editor</title>
   <script src="./node_modules/blockly/blockly_compressed.js"></script>
   <script src="./node_modules/blockly/blocks_compressed.js"></script>
   <script src="./node_modules/blockly/javascript_compressed.js"></script>
   <script src="./node_modules/blockly/msg/en.js"></script>
   <script src="/appengine/storage.js"></script>
-
+  <script src="/util/store.legacy.min.js"></script>
   <style>
     body {
       background-color: #fff;
@@ -125,33 +125,28 @@
 
   <script>
 
+
 window.onload = function() {
-  var reloaded = sessionStorage.getItem("reloaded");
-  var pageload = sessionStorage.getItem("pageload");
-  if(reloaded){
-      //sessionStorage.removeItem("reloaded");
-      //BlocklyStorage.restoreBlocks();
+  
+  if(store.get('reloaded') != false){
       BlocklyStorage.coopBlocks();
-      alert('recarregado')
-      
+      alert('salvo, pode fechar a janela')      
     }
-  if(pageload){
-      //sessionStorage.removeItem("pageload");
-      //BlocklyStorage.restoreBlocks();
+  if(store.get('pageloaded') != false){
       BlocklyStorage.loadBlocks();
-      //alert('carregado')
-      
-    }
-    
+      alert('carregado')    
+    }  
 }
 
     function reloadPage(){
-      sessionStorage.setItem("reloaded", "true");
+      store.set('reloaded', true)
+      store.set('pageloaded', false)
       window.location.reload();
     }
 
     function pageload(){
-      sessionStorage.setItem("pageload", "true");
+      store.set('reloaded', false) 
+      store.set('pageloaded', true)
       window.location.reload();
     }
 

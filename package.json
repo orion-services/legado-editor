@@ -19,5 +19,8 @@
   },
   "scripts": {
     "start": "light-server -s . -p 7000"
+  },
+  "devDependencies": {
+    "store": "^2.0.12"
   }
 }

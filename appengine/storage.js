@@ -30,6 +30,17 @@ BlocklyStorage.backupBlocks_ = function(workspace) {
   }
 };
 
+BlocklyStorage.backupCoopBlocks_ = function(workspace) {
+  if ('localStorage' in window) {
+    var xml = Blockly.Xml.workspaceToDom(workspace);
+    // Gets the current URL, not including the hash.
+    var url = window.location.href.split('#')[0];
+    window.localStorage.setItem(url, Blockly.Xml.domToText(xml));
+    unloadURL = reloadPage();
+    
+  }
+};
+
 /**
  * Bind the localStorage backup function to the unload event.
  * @param {Blockly.WorkspaceSvg=} opt_workspace Workspace.
@@ -37,8 +48,8 @@ BlocklyStorage.backupBlocks_ = function(workspace) {
 BlocklyStorage.backupOnUnload = async function(opt_workspace) {
   var workspace = opt_workspace || Blockly.getMainWorkspace();
   window.addEventListener('unload',
-      function() {BlocklyStorage.backupBlocks_(workspace);}, false);
-      
+      function() {BlocklyStorage.backupCoopBlocks_(workspace);}, false);
+      unloadURL = pageload();
       alert("salvo");
 };
 
