@@ -106,6 +106,9 @@ BlocklyStorage.coopBlocks = async function(opt_workspace) {
 
 };
 
+
+ 
+
 BlocklyStorage.loadBlocks = async function(opt_workspace) {
   var urlblock = window.location.href.split('#')[0];
 

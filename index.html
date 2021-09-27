@@ -11,6 +11,7 @@
   <script src="./node_modules/blockly/lua_compressed.js"></script>
   <script src="./node_modules/blockly/dart_compressed.js"></script>
   <script src="./node_modules/blockly/msg/en.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="/appengine/storage.js"></script>
   <script src="/util/store.legacy.min.js"></script>
   <style>
@@ -29,7 +30,7 @@
 
 
   <p>
-    <button onclick="BlocklyStorage.backupOnUnload()">
+    <button onclick="BlocklyStorage.backupOnUnload()" id="save">
       Save block state</button>
   </p>
 
@@ -408,7 +409,6 @@
 
   <script>
 
-
 window.onload = function() {
   
   if(store.get('reloaded') != false){
@@ -433,51 +433,74 @@ window.onload = function() {
       window.location.reload();
     }
 
-
-    var demoWorkspace = Blockly.inject('blocklyDiv',
-        {media: 'https://unpkg.com/blockly/media/',
-        maxBlocks: 10,
-         toolbox: document.getElementById('toolbox')});
-
-    // An href with #key triggers an AJAX call to retrieve saved blocks.
-    if ('BlocklyStorage' in window && window.location.hash.length > 1) {
-      BlocklyStorage.retrieveXml(window.location.hash.substring(1));
+    function checkLim(){
+      if(document.getElementById('capacity').textContent > 0){
+          document.getElementById('save').style.visibility = 'hidden';
+        }else{
+          document.getElementById('save').style.visibility = 'visible';
+        }
     }
 
-  function onchange(event) {
-      document.getElementById('capacity').textContent =
-          demoWorkspace.remainingCapacity();
-    }
+  //('http://localhost:8080/editor/api/v1/loadCode/1');
 
-    demoWorkspace.addChangeListener(onchange);
-    onchange();
+  async function limWorkspace() {
+        //GET
+        let loadURL = await fetch("http://localhost:8080/editor/api/v1/loadCode/1")
+          .then(response => response.json())
 
-    function showCode() {
-      // Generate JavaScript code and display it.
-      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-      var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
-      alert(code);
-    }
+        limiteMax = loadURL.limite
+        
 
-    function myUpdateFunction(event) {
-      var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
-      document.getElementById('textarea').value = code;
-    }
-    demoWorkspace.addChangeListener(myUpdateFunction);
 
-    function runCode() {
-      // Generate JavaScript code and run it.
-      window.LoopTrap = 1000;
-      Blockly.JavaScript.INFINITE_LOOP_TRAP =
-          'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-      var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
-      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-      try {
-        eval(code);
-      } catch (e) {
-        alert(e);
-      }
+          var demoWorkspace = Blockly.inject('blocklyDiv',
+              {media: 'https://unpkg.com/blockly/media/',
+              maxBlocks: limiteMax,
+              toolbox: document.getElementById('toolbox')});
+        
+      
+      
+        // An href with #key triggers an AJAX call to retrieve saved blocks.
+        if ('BlocklyStorage' in window && window.location.hash.length > 1) {
+          BlocklyStorage.retrieveXml(window.location.hash.substring(1));
+        }
+
+      function onchange(event) {
+          document.getElementById('capacity').textContent =
+              demoWorkspace.remainingCapacity();
+              checkLim();
+        }
+
+        demoWorkspace.addChangeListener(onchange);
+        onchange();
+
+        function showCode() {
+          // Generate JavaScript code and display it.
+          Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+          var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+          alert(code);
+        }
+
+        function myUpdateFunction(event) {
+          var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+          document.getElementById('textarea').value = code;
+        }
+        demoWorkspace.addChangeListener(myUpdateFunction);
+
+        function runCode() {
+          // Generate JavaScript code and run it.
+          window.LoopTrap = 1000;
+          Blockly.JavaScript.INFINITE_LOOP_TRAP =
+              'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+          var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+          Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+          try {
+            eval(code);
+          } catch (e) {
+            alert(e);
+          }
     }
+  }
+  limWorkspace()
   </script>
 
 </body>
