@@ -441,11 +441,17 @@ window.onload = function() {
         }
     }
 
-  //('http://localhost:8080/editor/api/v1/loadCode/1');
-
   async function limWorkspace() {
         //GET
-        let loadURL = await fetch("http://localhost:8080/editor/api/v1/loadCode/1")
+
+        //será alterado para hash
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const idd = urlParams.get('id');
+        console.log(idd);
+
+
+        let loadURL = await fetch("http://localhost:8080/editor/api/v1/loadCode/"+idd)
           .then(response => response.json())
 
         limiteMax = loadURL.limite
