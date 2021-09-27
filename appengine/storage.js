@@ -112,8 +112,13 @@ BlocklyStorage.coopBlocks = async function(opt_workspace) {
 BlocklyStorage.loadBlocks = async function(opt_workspace) {
   var urlblock = window.location.href.split('#')[0];
 
-    //GET
-    let loadURL = await fetch("http://localhost:8080/editor/api/v1/loadCode/1")
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const hashh = urlParams.get('hash');
+  console.log(hashh);
+
+
+  let loadURL = await fetch("http://localhost:8080/editor/api/v1/loadCode/" + hashh)
     .then(response => response.json())
 
     console.log(loadURL.textCode)

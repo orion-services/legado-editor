@@ -450,10 +450,10 @@ window.onload = function() {
         console.log(hashh);
 
 
-        let loadURL = await fetch("http://localhost:8080/editor/api/v1/loadCode/" + hashh)
+        let limURL = await fetch("http://localhost:8080/editor/api/v1/loadCode/" + hashh)
           .then(response => response.json())
 
-        limiteMax = loadURL.limite
+        limiteMax = limURL.limite
         
 
 
