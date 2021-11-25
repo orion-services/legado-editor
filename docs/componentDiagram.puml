@@ -1,0 +1,29 @@
+@startuml
+
+skinparam usecase {
+
+    BackgroundColor DarkSeaGreen
+    BorderColor DarkSlateGray
+
+    BackgroundColor<< MySQL >> YellowGreen
+    BorderColor<< MySQL >> YellowGreen
+
+    ArrowColor Olive
+    ActorBorderColor black
+    ActorFontName Courier
+
+    ActorBackgroundColor<< Human >> Gold
+}
+Usuario as usr
+database "MySql" {
+[Banco de dados] as [MySQL]
+}
+:usr: -left-> [DISCORD BOT] : (1) Insere comando
+[DISCORD BOT] -up-> [REST API] : (2) Envia a requisicao para o back-end
+[REST API] -up-> [DISCORD BOT] : (3) Retorna o link para o bot
+[DISCORD BOT] -up-> [usr] : (4) O bot retorna o link para o usuario
+
+:usr: -left-> [BLOCKLY] : (5) Com o link, o usuario acessa o editor
+[BLOCKLY] -right-> [REST API] : (6) As alteracoes feitas pelo usuario sao enviadas ao back-end
+[REST API] -up-> [MySQL] : (7) O servico persiste a informacao no banco de dados MySQL 
+@enduml

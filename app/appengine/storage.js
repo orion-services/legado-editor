@@ -87,9 +87,14 @@ BlocklyStorage.coopBlocks = async function(opt_workspace) {
       }
       formBody = formBody.join("&");
 
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const hashh = urlParams.get('hash');
+      console.log(hashh);
+
         const getData = async () => {
-          const response = await fetch('http://localhost:8080/editor/api/v1/updateCode', {
-            method: 'PUT',
+          const response = await fetch('http://localhost:8080/editor/api/v1/incrementCode/'+hashh, {
+            method: 'POST',
             mode: 'cors',
             headers: {
               'content-type': 'application/x-www-form-urlencoded',
@@ -107,8 +112,6 @@ BlocklyStorage.coopBlocks = async function(opt_workspace) {
 };
 
 
- 
-
 BlocklyStorage.loadBlocks = async function(opt_workspace) {
   var urlblock = window.location.href.split('#')[0];
 
@@ -117,19 +120,29 @@ BlocklyStorage.loadBlocks = async function(opt_workspace) {
   const hashh = urlParams.get('hash');
   console.log(hashh);
 
+    function axiosLoad() {
+      // create a promise for the axios request
+      const promise = axios.get("http://localhost:8080/editor/api/v1/loadCode/" + hashh)
+      // using .then, create a new promise which extracts the data
+      const dataPromise = promise.then((response) => response.data)
+      // return it
+      return dataPromise
+  }
+  
+  // now we can use that data from the outside!
 
-  let loadURL = await fetch("http://localhost:8080/editor/api/v1/loadCode/" + hashh)
-    .then(response => response.json())
+  axiosLoad()
+      .then(data => {
+        if ('localStorage' in window && data.textCode) {
+          var workspace = opt_workspace || Blockly.getMainWorkspace();
+          var xml = Blockly.Xml.textToDom(data.textCode);
+          Blockly.Xml.domToWorkspace(xml, workspace);
+          console.log(window.localStorage[urlblock]);  
+        }
+      })
+      .catch(err => console.log(err))
 
-    console.log(loadURL.textCode)
 
-    if ('localStorage' in window && loadURL.textCode) {
-      var workspace = opt_workspace || Blockly.getMainWorkspace();
-      var xml = Blockly.Xml.textToDom(loadURL.textCode);
-      Blockly.Xml.domToWorkspace(xml, workspace);
-      console.log(window.localStorage[urlblock]);
-      
-    }
 
 };
 
