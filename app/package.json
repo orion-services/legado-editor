@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "blockly": "^5.20210325.0",
+    "cypress": "^9.1.1",
     "http-server": "^13.0.2",
     "light-server": "^2.9.1",
     "materialize-css": "^1.0.0-rc.2"

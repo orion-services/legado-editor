@@ -1,4 +1,4 @@
-# orion dockly editor 
+# orion dockly editor
 
 Cooperative editor for teaching programming in basic education
 
@@ -13,3 +13,7 @@ Cooperative editor for teaching programming in basic education
     user load page with hash and a block number, like:
     -  http://0.0.0.0:7000/?hash=yTF4zgdd&lblock=10
     user save it, and back-end update for a new user continue a code
+
+## cypress
+
+    npx cypress open
