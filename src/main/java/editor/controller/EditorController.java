@@ -234,9 +234,10 @@ public class EditorController extends BaseController implements EditorInterface 
      
         final Group group = groupDAO.find("name", namegroup).firstResult();
         final Activity activity = activityDAO.find("ugroup_id", group.getId()).firstResult();
+        final Code checkUser = codeDAO.find("user_id", user.getId()).firstResult();
         Code code = codeDAO.find("order by id desc").firstResult();  
         
-        if(group==null || user==null || activity==null){
+        if(group==null || user==null || checkUser!=null || activity==null){
             ResponseBuilderImpl builder = new ResponseBuilderImpl();
             builder.status(Response.Status.BAD_REQUEST);
             builder.entity("empty data, make sure you fill in correctly and try again");
