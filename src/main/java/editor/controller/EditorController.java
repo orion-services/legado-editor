@@ -22,7 +22,6 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -43,8 +42,6 @@ import editor.entity.Code;
 import editor.entity.Group;
 import editor.entity.Status;
 import editor.entity.Status.StatusEnum;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.panache.common.Parameters;
 import editor.entity.User;
 
 @RequestScoped
@@ -164,7 +161,7 @@ public class EditorController extends BaseController implements EditorInterface 
         final Activity activity = new Activity();
         final Group group = groupDAO.find("name", namegroup).firstResult();
         final Status status = new Status();
-        Code code = new Code();
+        
         
         if(group==null){
             ResponseBuilderImpl builder = new ResponseBuilderImpl();
@@ -173,10 +170,10 @@ public class EditorController extends BaseController implements EditorInterface 
             Response response = builder.build();
             throw new WebApplicationException(response);
         }else{
-            code = createCode();
+            createCode();
             status.setStatusEnum(StatusEnum.ACTIVE);
             group.addStatus(status);
-            activity.addCode(code);
+           
             activity.setUgroup(group);
             activityDAO.persist(activity);
         }
@@ -237,19 +234,21 @@ public class EditorController extends BaseController implements EditorInterface 
      
         final Group group = groupDAO.find("name", namegroup).firstResult();
         final Activity activity = activityDAO.find("ugroup_id", group.getId()).firstResult();
-        final Code code = codeDAO.find("activity_id", activity.getId()).firstResult();
-
-        if(group==null || user==null || code==null || activity==null){
+        Code code = codeDAO.find("order by id desc").firstResult();  
+        
+        if(group==null || user==null || activity==null){
             ResponseBuilderImpl builder = new ResponseBuilderImpl();
             builder.status(Response.Status.BAD_REQUEST);
             builder.entity("empty data, make sure you fill in correctly and try again");
             Response response = builder.build();
             throw new WebApplicationException(response);
         }else{
+            //incrementar ao invés de criar um novo bloco de codigo
 
-          code.setUser(user);
-          activity.setUser(user);
-          codeDAO.isPersistent(code);
+            code.setUser(user);
+            activity.setUser(user);
+            code.setActivity(activity);
+            codeDAO.isPersistent(code);
 
             return "http://0.0.0.0:7000/?hash=" + code.getHashCode() + "&lblock=" + code.getLimitBlock();
         } 
@@ -295,7 +294,7 @@ public class EditorController extends BaseController implements EditorInterface 
 
             String hash = code.setHashCode(code.generateHash());
             code.setHashCode(hash);
-            code.setLimitBlock(5);
+            code.setLimitBlock(5);;
             codeDAO.persist(code);
 
         return code;
@@ -313,9 +312,9 @@ public class EditorController extends BaseController implements EditorInterface 
         Code lastcode = codeDAO.find("hashCode", hash).firstResult();
         try {
 
-            code.setTextCode(textCode);
+                code.setTextCode(textCode);
                 String newHash = code.setHashCode(code.generateHash());
-                long limitBlock = lastcode.getLimitBlock() + 5;
+                int limitBlock = lastcode.getLimitBlock() + 5;
                 code.setHashCode(newHash);
                 code.setLimitBlock(limitBlock);
                 codeDAO.persist(code);
@@ -331,10 +330,10 @@ public class EditorController extends BaseController implements EditorInterface 
     @Path("/loadCode/{hash}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Code loadCode(@PathParam("hashCode") final String hashCode) throws WebApplicationException {
+    public Code loadCode(@PathParam("hash") final String hash) throws WebApplicationException {
         Code code = new Code();
         try {
-            code = codeDAO.find("hashCode", hashCode).firstResult();
+            code = codeDAO.find("hashCode", hash).firstResult();
         } catch (Exception e) {
             throw new WebApplicationException("Code not found", Response.Status.NOT_FOUND);
         }

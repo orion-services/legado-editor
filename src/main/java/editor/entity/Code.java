@@ -51,7 +51,7 @@ public class Code{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "activity_id",referencedColumnName = "id")
@@ -77,7 +77,7 @@ public class Code{
     @Column(length = 12000)
     private String textCode;
 
-    private long limitBlock;
+    private int limitBlock;
 
 
 
@@ -139,21 +139,21 @@ public class Code{
     }
 
 
-    public long getLimitBlock() {
+    public int getLimitBlock() {
         return this.limitBlock;
     }
 
-    public void setLimitBlock(long limitBlock) {
+    public void setLimitBlock(int limitBlock) {
         this.limitBlock = limitBlock;
     }
 
 
 
-    public long getId(long idCode) {
+    public Long getId(Long idCode) {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

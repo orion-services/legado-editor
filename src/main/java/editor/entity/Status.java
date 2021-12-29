@@ -54,7 +54,7 @@ public class Status {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     public StatusEnum statusEnum = StatusEnum.INACTIVE;
 
@@ -99,11 +99,11 @@ public class Status {
 
     
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -23,8 +23,11 @@
       <dependency>
         <groupId>org.seleniumhq.selenium</groupId>
         <artifactId>selenium-java</artifactId>
-        <version>4.0.0-alpha-7</version>
+        <version>3.141.59</version>
+        <scope>test</scope>
       </dependency>
+
+
 
       <dependency>
         <groupId>${quarkus.platform.group-id}</groupId>
