@@ -154,4 +154,12 @@ public class Group {
     }
 
 
+    public Group(Long id, List<User> users, Set<Status> statuses, Set<Activity> activities, String name) {
+        this.id = id;
+        this.users = users;
+        this.statuses = statuses;
+        this.activities = activities;
+        this.name = name;
+    }
+
 }

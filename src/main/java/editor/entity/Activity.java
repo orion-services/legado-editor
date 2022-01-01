@@ -63,7 +63,7 @@ public class Activity {
     @JsonBackReference
     public User user;
 
-    private enum StatusType {
+    public enum StatusType {
         WRITTERS_CIRCLE
     };
 
@@ -171,6 +171,18 @@ public class Activity {
     public void setModifiedDate(java.util.Calendar modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
+
+
+    public Activity(Long id, Group ugroup, User user, StatusType statusType, Set<Code> codes, java.util.Calendar createdDate, java.util.Calendar modifiedDate) {
+        this.id = id;
+        this.ugroup = ugroup;
+        this.user = user;
+        this.statusType = statusType;
+        this.codes = codes;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+    }
+
 
 
 

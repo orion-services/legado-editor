@@ -147,5 +147,17 @@ public class Status {
 
 
 
+    public Status(Long id, StatusEnum statusEnum, Group ugroup, List<User> users, java.util.Calendar createdDate, java.util.Calendar modifiedDate) {
+        this.id = id;
+        this.statusEnum = statusEnum;
+        this.ugroup = ugroup;
+        this.users = users;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+    }
+
+    public Status() {
+    }
+
 
 }

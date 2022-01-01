@@ -13,19 +13,10 @@ You can run your application in dev mode that enables live coding using:
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
 
-## Hint
+## Reset all containers and volumes
 
-If any port is already being used
+docker kill $(docker ps -q);docker rm $(docker ps -a -q)
 
-- to kill port: sudo kill -9 `sudo lsof -t -i:7000`
-- netstat -anop | grep 8080
-- kill -9 id
--p kill -9 -f tomcat
-
-If you need to take a drastic measure regarding the Docker files
-
-- to kill all docker files: docker rm -f $(docker ps -a -q);docker system prune --volumes -a -f
-
-## Run on another Debug port (When several services are turning simultaneously)
+## Run on another Debug port
 
 ./mvnw compile quarkus:dev -Ddebug=5006

@@ -165,6 +165,21 @@ public class Code{
         this.textCode = textCode;
     }
 
+
+    public Code() {
+    }
+
+
+    public Code(Long id, Activity activity, User user, java.util.Calendar createdDate, java.util.Calendar modifiedDate, String textCode, int limitBlock, String hashCode) {
+        this.id = id;
+        this.activity = activity;
+        this.user = user;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.textCode = textCode;
+        this.limitBlock = limitBlock;
+        this.hashCode = hashCode;
+    }
     
    
 }
