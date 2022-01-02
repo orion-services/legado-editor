@@ -7,5 +7,5 @@
 # (You could define this in ~/.bashrc if you want it in every instance).
 
 cd ..
-./mvnw package
+./mvnw clean package -DskipTests
 docker-compose up -d
