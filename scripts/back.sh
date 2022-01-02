@@ -7,5 +7,5 @@
 # (You could define this in ~/.bashrc if you want it in every instance).
 
 cd ..
+./mvnw package
 docker-compose up -d
-./mvnw compile quarkus:dev
