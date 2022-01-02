@@ -15,7 +15,6 @@
  */
 
 package editor.controller;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -26,9 +25,8 @@ import editor.entity.User;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-public class UserControllerTest extends BaseController{
+public class UserControllerTest {
 
-    public static EditorController editorController;
 
     @Test
     @DisplayName("Create User")
@@ -38,6 +36,7 @@ public class UserControllerTest extends BaseController{
         user.setHashUser("Z3VpbGhlcm1l");
         assertEquals("guilherme", user.getName());
         assertEquals("Z3VpbGhlcm1l", user.getHashUser());
+
     }
 
     @Test
