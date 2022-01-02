@@ -4,6 +4,10 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
+## Run application
+
+docker-compose up -d
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
@@ -16,8 +20,8 @@ You can run your application in dev mode that enables live coding using:
 ## Build a editor container
 
 mvn package
-docker build -f src/main/docker/Dockerfile.jvm -t quarkus/editor-jvm .
-docker run -i --rm -p 8080:8080 quarkus/editor-jvm
+docker build -f src/main/docker/Dockerfile.jvm -t editor-service .
+docker run -i --rm -p 8080:8080 editor-service
 ## Reset all containers
 
 docker kill $(docker ps -q);docker rm $(docker ps -a -q)

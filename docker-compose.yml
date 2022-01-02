@@ -39,4 +39,17 @@ services:
             image: editor-service
             ports:
                 - 8080:8080
+            environment:
+                quarkus.datasource.jdbc.url: "jdbc:mysql://db:3306/editor-service"
+
+    bot:
+        image: guismoreira/editor-bot:latest
+        container_name: editor-bot
             
+    app:
+        container_name: editor-blockly
+        build:  
+            context: ./app
+            dockerfile: Dockerfile
+        ports:
+            - '7000:7000'
