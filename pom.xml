@@ -19,16 +19,6 @@
   </properties>
   <dependencyManagement>
     <dependencies>
-
-      <dependency>
-        <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-java</artifactId>
-        <version>3.141.59</version>
-        <scope>test</scope>
-      </dependency>
-
-
-
       <dependency>
         <groupId>${quarkus.platform.group-id}</groupId>
         <artifactId>${quarkus.platform.artifact-id}</artifactId>

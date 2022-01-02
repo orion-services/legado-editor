@@ -1,6 +1,7 @@
 version: '3.7'
 volumes:
     database:
+
 services:
     db:
         image: mysql:latest
@@ -14,9 +15,10 @@ services:
             - MYSQL_DATABASE=editor-service
             - MYSQL_USER=editor-service
             - MYSQL_PASSWORD=editor-service
+
     phpMyAdmin:
             image: phpmyadmin/phpmyadmin:latest
-            container_name: game-phpmyadmin
+            container_name: editor-phpmyadmin
             environment:
                 - PMA_ARBITRARY=1
             links:
@@ -25,11 +27,16 @@ services:
                 - 80:80
             volumes:
                 - /sessions
-    # service:
-    #         depends_on: 
-    #             - "db"
-    #             - "phpMyAdmin"
-    #         container_name: editor-service
-    #         ports:
-    #             - 9080:9080
-    #             - 9443:9443
+
+    service:
+            build:
+                context: .
+                dockerfile: Dockerfile.jvm
+            depends_on: 
+                - "db"
+                - "phpMyAdmin"
+            container_name: editor-service
+            image: editor-service
+            ports:
+                - 8080:8080
+            
