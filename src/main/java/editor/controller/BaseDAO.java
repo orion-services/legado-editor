@@ -21,7 +21,7 @@ import javax.inject.Inject;
 
 import editor.data.*;
 
-public class BaseController {
+public class BaseDAO {
 
     @Inject
     protected UserDAO userDAO;

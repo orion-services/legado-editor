@@ -46,7 +46,7 @@ import editor.entity.User;
 
 @RequestScoped
 @Path("/api/v1/")
-public class EditorController extends BaseController implements EditorInterface {
+public class EditorService extends BaseDAO implements EditorInterface {
 
     EntityManager em;
 
