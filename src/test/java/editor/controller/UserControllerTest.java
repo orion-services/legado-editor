@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import editor.entity.User;
+import editor.model.User;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest

@@ -1,4 +1,4 @@
-package editor.controller;
+package editor.service;
 
 
 /**
@@ -37,12 +37,12 @@ import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.specimpl.ResponseBuilderImpl;
 
-import editor.entity.Activity;
-import editor.entity.Code;
-import editor.entity.Group;
-import editor.entity.Status;
-import editor.entity.Status.StatusEnum;
-import editor.entity.User;
+import editor.model.Activity;
+import editor.model.Code;
+import editor.model.Group;
+import editor.model.Status;
+import editor.model.User;
+import editor.model.Status.StatusEnum;
 
 @RequestScoped
 @Path("/api/v1/")
