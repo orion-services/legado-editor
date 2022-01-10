@@ -16,6 +16,18 @@ services:
             - MYSQL_USER=editor-service
             - MYSQL_PASSWORD=editor-service
 
+    phpMyAdmin:
+            image: phpmyadmin/phpmyadmin:latest
+            container_name: editor-phpmyadmin
+            environment:
+                - PMA_ARBITRARY=1
+            links:
+                - db
+            ports:
+                - 80:80
+            volumes:
+                - /sessions
+
     service:
             build:
                 context: .

@@ -4,7 +4,7 @@ volumes:
 
 services:
     db:
-        image: mysql:latest
+        image: mariadb:latest
         container_name: editor-mysql
         ports:
             - 3306:3306
