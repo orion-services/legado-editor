@@ -35,15 +35,14 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.jboss.resteasy.specimpl.ResponseBuilderImpl;
 
 import editor.model.Activity;
 import editor.model.Code;
 import editor.model.Group;
 import editor.model.Status;
-import editor.model.User;
 import editor.model.Status.StatusEnum;
+import editor.model.User;
 
 @RequestScoped
 @Path("/api/v1/")
@@ -61,16 +60,16 @@ public class EditorServiceImpl extends BaseRepository implements EditorService {
         final User user = new User();
         final User hashCheck = userRepository.find("hashUser", hashUser).firstResult();
 
+        ResponseBuilderImpl builder = new ResponseBuilderImpl();
+        builder.status(Response.Status.BAD_REQUEST);
+
         if(name.isEmpty()) {
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
+
             builder.entity("name cannot be empty");
             Response response = builder.build();
             throw new WebApplicationException(response);
 
         }else if(hashCheck != null){
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
             builder.entity("already registered user");
             Response response = builder.build();
             throw new WebApplicationException(response);
@@ -97,16 +96,16 @@ public class EditorServiceImpl extends BaseRepository implements EditorService {
         final User user = userRepository.find("hashUser", hashUser).firstResult();
         final Group groupCheck = groupRepository.find("name", namegroup).firstResult();
 
+        ResponseBuilderImpl builder = new ResponseBuilderImpl();
+        builder.status(Response.Status.BAD_REQUEST);
+
         if(namegroup.isEmpty() || user == null) {
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
+
             builder.entity("user is null");
             Response response = builder.build();
             throw new WebApplicationException(response);
 
         }else if(groupCheck != null){
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
             builder.entity("already registered group");
             Response response = builder.build();
             throw new WebApplicationException(response);
@@ -136,9 +135,11 @@ public class EditorServiceImpl extends BaseRepository implements EditorService {
         final Status status = new Status();
         final Group group = groupRepository.find("name", namegroup).firstResult();
 
+        ResponseBuilderImpl builder = new ResponseBuilderImpl();
+        builder.status(Response.Status.BAD_REQUEST);
+
         if(user==null || group==null) {
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
+
             builder.entity("empty data, make sure you fill in correctly and try again");
             Response response = builder.build();
             throw new WebApplicationException(response);
@@ -163,10 +164,11 @@ public class EditorServiceImpl extends BaseRepository implements EditorService {
         final Group group = groupRepository.find("name", namegroup).firstResult();
         final Status status = new Status();
         
+        ResponseBuilderImpl builder = new ResponseBuilderImpl();
+        builder.status(Response.Status.BAD_REQUEST);
         
         if(group==null){
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
+
             builder.entity("empty data, make sure you fill in correctly and try again");
             Response response = builder.build();
             throw new WebApplicationException(response);
@@ -199,9 +201,11 @@ public class EditorServiceImpl extends BaseRepository implements EditorService {
         final Group group = groupRepository.find("name", namegroup).firstResult();
         final Status status = statusRepository.find("ugroup_id", group.getId()).firstResult();
 
+        ResponseBuilderImpl builder = new ResponseBuilderImpl();
+        builder.status(Response.Status.BAD_REQUEST);
+
         if(group==null || status==null){
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
+
             builder.entity("empty data, make sure you fill in correctly and try again");
             Response response = builder.build();
             throw new WebApplicationException(response);
@@ -214,7 +218,6 @@ public class EditorServiceImpl extends BaseRepository implements EditorService {
 
     }
     
-
     /**
      * Asks to participates in a group activity
      * 
@@ -236,11 +239,13 @@ public class EditorServiceImpl extends BaseRepository implements EditorService {
         final Group group = groupRepository.find("name", namegroup).firstResult();
         final Activity activity = activityRepository.find("ugroup_id", group.getId()).firstResult();
         final Code checkUser = codeRepository.find("user_id", user.getId()).firstResult();
-        Code code = codeRepository.find("order by id desc").firstResult();  
+        Code code = codeRepository.find("order by id desc").firstResult(); 
+        
+        ResponseBuilderImpl builder = new ResponseBuilderImpl();
+        builder.status(Response.Status.BAD_REQUEST);
         
         if(group==null || user==null || checkUser!=null || activity==null){
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
+
             builder.entity("empty data, make sure you fill in correctly and try again");
             Response response = builder.build();
             throw new WebApplicationException(response);
@@ -272,9 +277,11 @@ public class EditorServiceImpl extends BaseRepository implements EditorService {
         final User user = userRepository.find("hashUser", hashUser).firstResult();
         final List<Activity> activity = activityRepository.list("user_id", user.getId());
 
+        ResponseBuilderImpl builder = new ResponseBuilderImpl();
+        builder.status(Response.Status.BAD_REQUEST);
+
         if(activity==null){
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
+
             builder.entity("empty data, make sure you fill in correctly and try again");
             Response response = builder.build();
             throw new WebApplicationException(response);
@@ -341,13 +348,5 @@ public class EditorServiceImpl extends BaseRepository implements EditorService {
         }
         return code;
     }
-
-  
-
-
-   //1 - um usuario pode estar em um grupo, um grupo pode ter N usuarios
-   //2 - um grupo pode fazer N atividades, uma atividade pode ser feita por um grupo
-   //3 - pegar id da atividade e anexar na URL 
    
-
 }
