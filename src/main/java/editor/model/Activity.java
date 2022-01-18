@@ -37,6 +37,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -55,12 +56,12 @@ public class Activity {
     
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ugroup_id",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonIgnore
     public Group ugroup;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonIgnore
     public User user;
 
     public enum StatusType {
@@ -83,7 +84,7 @@ public class Activity {
         cascade = CascadeType.ALL, 
         fetch = FetchType.EAGER, 
         orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnore
     @Fetch(value = FetchMode.SUBSELECT)
     public Set<Code> codes = new HashSet<>();
 

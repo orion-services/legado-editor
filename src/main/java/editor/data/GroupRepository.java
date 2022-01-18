@@ -19,10 +19,10 @@ package editor.data;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import editor.model.*;
+import editor.model.Group;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped
-public class ActivityDAO implements PanacheRepository<Activity> {
+public class GroupRepository implements PanacheRepository<Group> {
 
 }

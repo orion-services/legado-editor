@@ -42,6 +42,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -77,12 +78,12 @@ public class Status {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ugroup_id",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonIgnore
     public Group ugroup;
 
     @ManyToMany(mappedBy="statuses", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    @JsonIgnoreProperties("statuses")
+    @JsonIgnore
     private List<User> users= new ArrayList<>();
 
 

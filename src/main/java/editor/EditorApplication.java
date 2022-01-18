@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import editor.service.EditorServiceImpl;
+
 /**
  * path application
  */
@@ -16,7 +18,7 @@ public class EditorApplication extends Application {
     public Set<Class<?>> getClasses() {
         final Set<Class<?>> resources = new HashSet<Class<?>>();
 
-        resources.add(EditorApplication.class);
+        resources.add(EditorServiceImpl.class);
 
         return resources;
     }

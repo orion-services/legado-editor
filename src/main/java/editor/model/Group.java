@@ -35,6 +35,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.metamodel.StaticMetamodel;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -64,7 +65,7 @@ public class Group {
         fetch = FetchType.EAGER, 
         orphanRemoval = true)
     @Fetch(value = FetchMode.SUBSELECT)
-    @JsonManagedReference
+    @JsonIgnore
     public Set<Status> statuses = new HashSet<>();
 
 
@@ -74,7 +75,7 @@ public class Group {
         fetch = FetchType.EAGER, 
         orphanRemoval = true)
     @Fetch(value = FetchMode.SUBSELECT)
-    @JsonManagedReference
+    @JsonIgnore
     public Set<Activity> activities = new HashSet<>();
 
     private String name;

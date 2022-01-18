@@ -1,4 +1,4 @@
-package editor.data;
+package editor.service;
 
 
 /**
@@ -17,12 +17,24 @@ package editor.data;
  * limitations under the License.
  */
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
-import editor.model.Group;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import editor.data.*;
 
-@ApplicationScoped
-public class GroupDAO implements PanacheRepository<Group> {
+public class BaseRepository {
 
+    @Inject
+    protected UserRepository userRepository;
+
+    @Inject
+    protected CodeRepository codeRepository;
+
+    @Inject
+    protected GroupRepository groupRepository;
+
+    @Inject
+    protected StatusRepository statusRepository;
+
+    @Inject
+    protected ActivityRepository activityRepository;
 }

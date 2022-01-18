@@ -23,6 +23,6 @@ import editor.model.*;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped
-public class UserDAO implements PanacheRepository<User> {
+public class CodeRepository implements PanacheRepository<Code> {
     
 }

@@ -1,4 +1,4 @@
-@startuml
+@startuml componentDiagram
 
 skinparam usecase {
 
@@ -15,7 +15,7 @@ skinparam usecase {
     ActorBackgroundColor<< Human >> Gold
 }
 Usuario as usr
-database "MySql" {
+database "MariaDB" {
 [Banco de dados] as [MySQL]
 }
 :usr: -left-> [DISCORD BOT] : (1) Insere comando
