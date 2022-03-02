@@ -251,7 +251,7 @@ public class EditorController extends BaseController implements EditorInterface 
             code.setActivity(activity);
             codeDAO.isPersistent(code);
 
-            return "http://144.22.133.118:7000/?hash=" + code.getHashCode() + "&lblock=" + code.getLimitBlock();
+            return "http://150.230.76.241:7000/?hash=" + code.getHashCode() + "&lblock=" + code.getLimitBlock();
         } 
     }
 

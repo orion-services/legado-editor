@@ -93,7 +93,7 @@ BlocklyStorage.coopBlocks = async function(opt_workspace) {
       console.log(hashh);
 
         const getData = async () => {
-          const response = await fetch('http://144.22.133.118:8080/editor/api/v1/incrementCode/'+hashh, {
+          const response = await fetch('http://150.230.76.241:8080/editor/api/v1/incrementCode/'+hashh, {
             method: 'POST',
             mode: 'cors',
             headers: {
