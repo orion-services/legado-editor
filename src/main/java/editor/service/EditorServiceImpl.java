@@ -48,8 +48,6 @@ import editor.model.User;
 @Path("/api/v1/")
 public class EditorServiceImpl extends BaseRepository implements EditorService {
 
-    EntityManager em;
-
     @POST
     @Path("createUser")
     @Consumes("application/x-www-form-urlencoded")
