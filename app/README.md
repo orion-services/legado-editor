@@ -1,4 +1,4 @@
-# orion dockly editor
+# orion blockly editor
 
 Cooperative editor for teaching programming in basic education
 
@@ -11,7 +11,7 @@ Cooperative editor for teaching programming in basic education
 ## functionality
     back-end method create a code stance
     user load page with hash and a block number, like:
-    -  http://0.0.0.0:7000/?hash=yTF4zgdd&lblock=10
+    -  http://localhost:7000/?hash=yTF4zgdd&lblock=10
     user save it, and back-end update for a new user continue a code
 
 ## cypress

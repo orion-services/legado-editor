@@ -255,7 +255,7 @@ public class EditorServiceImpl extends BaseRepository implements EditorService {
             code.setActivity(activity);
             codeRepository.isPersistent(code);
 
-            return "http://0.0.0.0:7000/?hash=" + code.getHashCode() + "&lblock=" + code.getLimitBlock();
+            return "http://localhost:7000/?hash=" + code.getHashCode() + "&lblock=" + code.getLimitBlock();
         } 
     }
 
