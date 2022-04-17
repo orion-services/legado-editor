@@ -458,7 +458,8 @@ function reloadPage(){
 
     function checkLim(){
       if(document.getElementById('capacity').textContent > 0){
-          document.getElementById('save').style.visibility = 'hidden';
+        //visibility always visible
+          document.getElementById('save').style.visibility = 'visible';
         }else{
           document.getElementById('save').style.visibility = 'visible';
         }

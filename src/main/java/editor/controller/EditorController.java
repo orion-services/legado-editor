@@ -295,7 +295,7 @@ public class EditorController extends BaseController implements EditorInterface 
 
             String hash = code.setHashCode(code.generateHash());
             code.setHashCode(hash);
-            code.setLimitBlock(5);;
+            code.setLimitBlock(1000);;
             codeDAO.persist(code);
 
         return code;
@@ -315,7 +315,7 @@ public class EditorController extends BaseController implements EditorInterface 
 
                 code.setTextCode(textCode);
                 String newHash = code.setHashCode(code.generateHash());
-                int limitBlock = lastcode.getLimitBlock() + 5;
+                int limitBlock = lastcode.getLimitBlock() + 1000;
                 code.setHashCode(newHash);
                 code.setLimitBlock(limitBlock);
                 codeDAO.persist(code);

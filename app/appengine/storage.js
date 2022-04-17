@@ -122,7 +122,7 @@ BlocklyStorage.loadBlocks = async function(opt_workspace) {
 
     function axiosLoad() {
       // create a promise for the axios request
-      const promise = axios.get("http://144.22.133.118:8080/editor/api/v1/loadCode/" + hashh)
+      const promise = axios.get("http://150.230.76.241:8080/editor/api/v1/loadCode/" + hashh)
       // using .then, create a new promise which extracts the data
       const dataPromise = promise.then((response) => response.data)
       // return it
