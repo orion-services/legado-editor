@@ -18,6 +18,10 @@
       //
       //  Disable the display and render buttons until MathJax is done
       //
+      saveMath(input);
+      console.warn(input);
+      
+      
       var display = document.getElementById("display");
       var button = document.getElementById("render");
       button.disabled = display.disabled = true;
@@ -56,6 +60,43 @@
         button.disabled = display.disabled = false;
       });
     }
+
+    async function saveMath(input){
+
+      var details = {
+        textCode:input,
+        id:1
+      };
+      
+      var formBody = [];
+      for (var property in details) {
+        var encodedKey = encodeURIComponent(property);
+        var encodedValue = encodeURIComponent(details[property]);
+        formBody.push(encodedKey + "=" + encodedValue);
+      }
+      formBody = formBody.join("&");
+
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const hashh = urlParams.get('hash');
+      console.warn(formBody)
+
+        const getData = async () => {
+          const response = await fetch('http://localhost:8080/editor/api/v1/incrementCode/'+hashh, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded',
+              'accept': '*/*',
+              'connection':'keep-alive',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: formBody,
+          });
+          console.info("Response:", response)
+        };
+      getData()
+    }
   </script>
   <style>
   #frame {
@@ -92,12 +133,10 @@
 <div id="frame">
 
 <h1>MathJax v3: TeX to HTML</h1>
+<p>Enter TeX commands below</p>
 
 <textarea id="input" rows="15" cols="10">
-%
-% Enter TeX commands below
-%
-x = {-b \pm \sqrt{b^2-4ac} \over 2a}.
+x = {-b \pm \sqrt{b^2-4ac} \over 2a}
 </textarea>
 <br />
 <div class="left">

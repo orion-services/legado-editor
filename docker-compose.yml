@@ -1,3 +1,6 @@
+# docker-compose -f docker-compose.dev.yml up -d
+# ./mvnw compile quarkus:dev
+
 version: '3.7'
 volumes:
     database:
@@ -5,7 +8,7 @@ volumes:
 services:
     db:
         image: mariadb:latest
-        container_name: editor-mysql
+        container_name: editor-mariadb
         ports:
             - 3306:3306
         volumes:
@@ -27,29 +30,3 @@ services:
                 - 80:80
             volumes:
                 - /sessions
-
-    service:
-            build:
-                context: .
-                dockerfile: Dockerfile.jvm
-            depends_on: 
-                - "db"
-                - "phpMyAdmin"
-            container_name: editor-service
-            image: editor-service
-            ports:
-                - 8080:8080
-            environment:
-                quarkus.datasource.jdbc.url: "jdbc:mysql://db:3306/editor-service"
-
-    bot:
-        image: guismoreira/editor-bot:latest
-        container_name: editor-bot
-            
-    app:
-        container_name: editor-blockly
-        build:  
-            context: ./app
-            dockerfile: Dockerfile
-        ports:
-            - '7000:7000'
