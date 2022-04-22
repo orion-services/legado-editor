@@ -2,5 +2,5 @@
 
 cd ..
 cd app
-npm install
-npm run start
+npm i
+npm start
