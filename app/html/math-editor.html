@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width">
+  <title>MathJax v3 with interactive TeX input and HTML output</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="../js/math-script.js"></script>
+  <link rel="stylesheet" href="../css/math-style.css">
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+</head>
+
+<body>
+<div id="frame">
+
+<h1>MathJax v3: TeX to HTML</h1>
+<p>Enter TeX commands below</p>
+
+<textarea id="input" rows="15" cols="10">
+x = {-b \pm \sqrt{b^2-4ac} \over 2a}
+</textarea>
+<br />
+<div class="left">
+<input type="checkbox" id="display" checked onchange="convert()"> <label for="display">Display style</label>
+</div>
+<div class="right">
+  <button type="button" class="btn btn-warning" onclick="loadMath()" >
+    Load Math
+  </button>
+<input type="button" class="btn btn-success" value="Render Math" id="render" onclick="convert()" />
+</div>
+<br clear="all" />
+<div id="output"></div>
+</div>
+<div class="p-2">
+
+</div>
+</body>
+
+</html>

@@ -141,9 +141,6 @@ BlocklyStorage.loadBlocks = async function(opt_workspace) {
         }
       })
       .catch(err => console.log(err))
-
-
-
 };
 
 /**
