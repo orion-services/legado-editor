@@ -1,4 +1,4 @@
-package editor.controller;
+package editor.service;
 
 
 /**
@@ -23,10 +23,10 @@ import java.util.List;
 import javax.ws.rs.FormParam;
 
 
-import editor.entity.Activity;
-import editor.entity.Group;
-import editor.entity.Status;
-import editor.entity.User;
+import editor.model.Activity;
+import editor.model.Group;
+import editor.model.Status;
+import editor.model.User;
 
 
 public interface EditorInterface {

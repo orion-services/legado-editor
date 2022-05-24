@@ -1,4 +1,4 @@
-package editor.entity;
+package editor.model;
 
 
 /**

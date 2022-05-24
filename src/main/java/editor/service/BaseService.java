@@ -19,21 +19,21 @@ package editor.service;
 
 import javax.inject.Inject;
 
-import editor.data.*;
+import editor.repository.*;
 
-public class BaseController {
-
-    @Inject
-    protected UserDAO userDAO;
+public class BaseService {
 
     @Inject
-    protected CodeDAO codeDAO;
+    protected UserRepository userRepository;
 
     @Inject
-    protected GroupDAO groupDAO;
+    protected CodeRepository codeRepository;
 
     @Inject
-    protected StatusDAO statusDAO;
+    protected GroupRepository groupRepository;
+
+    @Inject
+    protected StatusRepository statusRepository;
 
     @Inject
     protected ActivityRepository activityRepository;

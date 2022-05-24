@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package editor.controller;
+package editor.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import editor.entity.User;
+import editor.model.User;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
