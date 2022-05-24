@@ -1,4 +1,4 @@
-package editor;
+package editor.service;
 
 
 /**
@@ -17,23 +17,24 @@ package editor;
  * limitations under the License.
  */
 
-import editor.controller.*;
-import java.util.HashSet;
-import java.util.Set;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
-/**
- * path application
- */
-@ApplicationPath("/editor")
-public class EditorService extends Application {
+import javax.inject.Inject;
 
-    @Override
-    public Set<Class<?>> getClasses() {
-        final Set<Class<?>> resources = new HashSet<Class<?>>();
+import editor.data.*;
 
-        resources.add(EditorController.class);
+public class BaseController {
 
-        return resources;
-    }
+    @Inject
+    protected UserDAO userDAO;
+
+    @Inject
+    protected CodeDAO codeDAO;
+
+    @Inject
+    protected GroupDAO groupDAO;
+
+    @Inject
+    protected StatusDAO statusDAO;
+
+    @Inject
+    protected ActivityRepository activityRepository;
 }

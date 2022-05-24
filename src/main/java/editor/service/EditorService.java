@@ -1,4 +1,4 @@
-package editor.controller;
+package editor.service;
 
 
 /**
@@ -175,7 +175,7 @@ public class EditorController extends BaseController implements EditorInterface 
             group.addStatus(status);
            
             activity.setUgroup(group);
-            activityDAO.persist(activity);
+            activityRepository.persist(activity);
         }
         return activity;
 
@@ -233,7 +233,7 @@ public class EditorController extends BaseController implements EditorInterface 
         final User user = userDAO.find("hashUser", hashUser).firstResult();
      
         final Group group = groupDAO.find("name", namegroup).firstResult();
-        final Activity activity = activityDAO.find("ugroup_id", group.getId()).firstResult();
+        final Activity activity = activityRepository.find("ugroup_id", group.getId()).firstResult();
         final Code checkUser = codeDAO.find("user_id", user.getId()).firstResult();
         Code code = codeDAO.find("order by id desc").firstResult();  
         
@@ -269,7 +269,7 @@ public class EditorController extends BaseController implements EditorInterface 
     @Override
     public List<Activity> listActivities(@FormParam("hashUser") String hashUser)throws WebApplicationException{
         final User user = userDAO.find("hashUser", hashUser).firstResult();
-        final List<Activity> activity = activityDAO.list("user_id", user.getId());
+        final List<Activity> activity = activityRepository.list("user_id", user.getId());
 
         if(activity==null){
             ResponseBuilderImpl builder = new ResponseBuilderImpl();
