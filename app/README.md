@@ -1,4 +1,4 @@
-# orion dockly editor
+# orion blockly editor
 
 Cooperative editor for teaching programming in basic education
 
