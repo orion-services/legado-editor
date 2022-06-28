@@ -1,0 +1,20 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+:Usuario: as user
+rectangle Bot {
+    usecase "Registrar Usuario" as la
+    usecase "Criar Atividade" as cg
+    usecase "Entrar na Atividade" as ja
+    usecase "Checar Status" as ca
+    usecase "Participar da atividade" as cs
+    usecase "Listar Atividades" as pa
+    
+}
+user --> la
+user --> ca
+user --> cg
+user --> pa
+user --> cs
+user --> ja
+@enduml
