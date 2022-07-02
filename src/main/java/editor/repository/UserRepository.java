@@ -1,4 +1,4 @@
-package editor.data;
+package editor.repository;
 
 
 /**
@@ -23,6 +23,8 @@ import editor.model.*;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped
-public class ActivityRepository implements PanacheRepository<Activity> {
 
+public class UserRepository implements PanacheRepository<User> {
+
+    
 }

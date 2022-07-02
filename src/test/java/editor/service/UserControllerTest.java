@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package editor.controller;
+package editor.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 

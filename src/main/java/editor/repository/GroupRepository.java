@@ -1,4 +1,4 @@
-package editor.service;
+package editor.repository;
 
 
 /**
@@ -17,24 +17,14 @@ package editor.service;
  * limitations under the License.
  */
 
-import javax.inject.Inject;
+import javax.enterprise.context.ApplicationScoped;
 
-import editor.data.*;
 
-public class BaseRepository {
+import editor.model.Group;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
-    @Inject
-    protected UserRepository userRepository;
+@ApplicationScoped
+public class GroupRepository implements PanacheRepository<Group> {
 
-    @Inject
-    protected CodeRepository codeRepository;
 
-    @Inject
-    protected GroupRepository groupRepository;
-
-    @Inject
-    protected StatusRepository statusRepository;
-
-    @Inject
-    protected ActivityRepository activityRepository;
 }

@@ -37,6 +37,10 @@ nb-configuration.xml
 
 # Local environment
 .env
+<<<<<<< HEAD
 
 plantuml.jar
 componentDiagram.png
+=======
+docs/plantuml.jar
+>>>>>>> 6be2e7afae1bfd79757b42a446d5da07353a8261

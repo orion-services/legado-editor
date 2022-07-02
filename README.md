@@ -22,9 +22,14 @@ You can run your application in dev mode that enables live coding using:
 mvn package
 docker build -f src/main/docker/Dockerfile.jvm -t editor-service .
 docker run -i --rm -p 8080:8080 editor-service
-## Reset all containers
 
-docker kill $(docker ps -q);docker rm $(docker ps -a -q)
+## Stop and remove all containers with docker-compose
+
+docker-compose down
+
+## Remove all images
+
+docker rmi $(docker images -q)
 
 ## Run on another Debug port
 
