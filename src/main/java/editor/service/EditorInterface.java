@@ -22,12 +22,10 @@ import java.util.List;
 
 import javax.ws.rs.FormParam;
 
-
 import editor.model.Activity;
 import editor.model.Group;
 import editor.model.Status;
 import editor.model.User;
-
 
 public interface EditorInterface {
 

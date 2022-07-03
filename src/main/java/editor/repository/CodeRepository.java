@@ -23,6 +23,9 @@ import editor.model.*;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped
+
+
 public class CodeRepository implements PanacheRepository<Code> {
+
     
 }

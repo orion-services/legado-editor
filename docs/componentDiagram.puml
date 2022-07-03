@@ -1,4 +1,4 @@
-@startuml
+@startuml componentDiagram
 
 skinparam usecase {
 
@@ -16,7 +16,11 @@ skinparam usecase {
 }
 Usuario as usr
 database "MariaDB" {
+<<<<<<< HEAD
+[Banco de dados] as [MySQL]
+=======
 [BANCO DE DADOS] as [MySQL]
+>>>>>>> 6be2e7afae1bfd79757b42a446d5da07353a8261
 }
 :usr: -left-> [DISCORD BOT] : (1) Insere comando
 [DISCORD BOT] -up-> [EDITOR] : (2) Envia a requisicao para o editor

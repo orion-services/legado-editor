@@ -39,8 +39,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -71,7 +70,7 @@ public class User {
                joinColumns={@JoinColumn(name="user_id", referencedColumnName = "id")},
                inverseJoinColumns={@JoinColumn(name="ugroup_id", referencedColumnName = "id")})
     @Fetch(value = FetchMode.SUBSELECT)
-    @JsonIgnoreProperties("users")
+    @JsonIgnore
     private List<Group> ugroups = new ArrayList<>();
 
 
@@ -80,7 +79,7 @@ public class User {
                joinColumns={@JoinColumn(name="user_id", referencedColumnName = "id")},
                inverseJoinColumns={@JoinColumn(name="status_id", referencedColumnName = "id")})
     @Fetch(value = FetchMode.SUBSELECT)
-    @JsonIgnoreProperties("users")
+    @JsonIgnore
     private List<Status> statuses = new ArrayList<>();
 
 
@@ -89,7 +88,7 @@ public class User {
         cascade = CascadeType.ALL, 
         fetch = FetchType.EAGER, 
         orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnore
     @Fetch(value = FetchMode.SUBSELECT)
     public Set<Activity> activities = new HashSet<>();
 
@@ -100,7 +99,7 @@ public class User {
         cascade = CascadeType.ALL, 
         fetch = FetchType.EAGER, 
         orphanRemoval = true)    
-    @JsonManagedReference
+    @JsonIgnore
     @Fetch(value = FetchMode.SUBSELECT)
     public Set<Code> codes = new HashSet<>();
 
