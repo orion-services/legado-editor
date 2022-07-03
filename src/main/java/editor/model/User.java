@@ -66,12 +66,12 @@ public class User {
 
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)
-    @JoinTable(name="user_ugroup",
+    @JoinTable(name="user_group",
                joinColumns={@JoinColumn(name="user_id", referencedColumnName = "id")},
-               inverseJoinColumns={@JoinColumn(name="ugroup_id", referencedColumnName = "id")})
+               inverseJoinColumns={@JoinColumn(name="_group_id", referencedColumnName = "id")})
     @Fetch(value = FetchMode.SUBSELECT)
     @JsonIgnore
-    private List<Group> ugroups = new ArrayList<>();
+    private List<Group> _groups = new ArrayList<>();
 
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)
@@ -189,18 +189,18 @@ public class User {
     }
 
 
-    public List<Group> getUgroups() {
-        return this.ugroups;
+    public List<Group> get_groups() {
+        return this._groups;
     }
 
-    public void setUgroups(List<Group> ugroups) {
-        this.ugroups = ugroups;
+    public void set_groups(List<Group> groups) {
+        this._groups = groups;
     }
 
 
-    public void addUgroup(Group ugroup) {
-        this.ugroups.add(ugroup);
-        ugroup.getUsers().add(this);
+    public void add_group(Group group) {
+        this._groups.add(group);
+        group.getUsers().add(this);
     }
 
     public void addStatuses(Status status) {
@@ -220,15 +220,20 @@ public class User {
 
 
 
-    public User(Long id, String name, String email, String hashUser, List<Group> ugroups, List<Status> statuses, Set<Activity> activities, Set<Code> codes) {
+    public User(Long id, String name, String email, String hashUser, List<Group> _groups, List<Status> statuses, Set<Activity> activities, Set<Code> codes) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.hashUser = hashUser;
-        this.ugroups = ugroups;
+        this._groups = _groups;
         this.statuses = statuses;
         this.activities = activities;
         this.codes = codes;
+    }
+
+    public User(String name, String hashUser) {
+        this.name = name;
+        this.hashUser = hashUser;
     }
 
 

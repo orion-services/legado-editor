@@ -180,6 +180,12 @@ public class Code{
         this.limitBlock = limitBlock;
         this.hashCode = hashCode;
     }
+
+    public Code(String textCode, String hashCode, int limitBlock) {
+        this.textCode = textCode;
+        this.hashCode = generateHash();
+        this.limitBlock = limitBlock;
+    }
     
    
 }

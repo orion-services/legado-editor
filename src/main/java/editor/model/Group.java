@@ -18,9 +18,7 @@ package editor.model;
  */
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Generated;
 import javax.persistence.CascadeType;
@@ -45,37 +43,37 @@ import org.hibernate.annotations.FetchMode;
 @Entity
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(Group.class)
-@SequenceGenerator(name="ugroup_seq", sequenceName = "ugroup_seq",initialValue = 1, allocationSize = 1)
-@Table(name = "ugroup")
+@SequenceGenerator(name="_group_seq", sequenceName = "_group_seq",initialValue = 1, allocationSize = 1)
+@Table(name = "_group")
 public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(mappedBy="ugroups", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)
+    @ManyToMany(mappedBy="_groups", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    @JsonIgnoreProperties("ugroups")
+    @JsonIgnoreProperties("_groups")
     private List<User> users= new ArrayList<>();
 
     @OneToMany(
-        mappedBy = "ugroup", 
+        mappedBy = "_group",
         cascade = CascadeType.ALL, 
         fetch = FetchType.EAGER, 
         orphanRemoval = true)
     @Fetch(value = FetchMode.SUBSELECT)
     @JsonIgnore
-    public Set<Status> statuses = new HashSet<>();
+    public List<Status> statuses = new ArrayList<>();
 
 
     @OneToMany(
-        mappedBy = "ugroup", 
+        mappedBy = "_group",
         cascade = CascadeType.ALL, 
         fetch = FetchType.EAGER, 
         orphanRemoval = true)
     @Fetch(value = FetchMode.SUBSELECT)
     @JsonIgnore
-    public Set<Activity> activities = new HashSet<>();
+    public List<Activity> activities = new ArrayList<>();
 
     private String name;
 
@@ -101,35 +99,35 @@ public class Group {
     }
 
 
-    public Set<Activity> getActivities() {
+    public List<Activity> getActivities() {
         return this.activities;
     }
 
-    public void setActivities(Set<Activity> activities) {
+    public void setActivities(List<Activity> activities) {
         this.activities = activities;
     }
 
 
     public void addUser(User user) {
             this.users.add(user);
-        user.getUgroups().add(this);
+        user.get_groups().add(this);
     }
 
     public void addActivity(Activity activity){
             activities.add(activity);
-        activity.setUgroup(this);
+        activity.set_group(this);
     }
     
     public void addStatus(Status status){
             statuses.add(status);
-        status.setUgroup(this);
+        status.set_group(this);
     }
 
-    public Set<Status> getStatuses() {
+    public List<Status> getStatuses() {
         return this.statuses;
     }
 
-    public void setStatuses(Set<Status> statuses) {
+    public void setStatuses(List<Status> statuses) {
         this.statuses = statuses;
     }
 
@@ -154,12 +152,22 @@ public class Group {
     }
 
 
-    public Group(Long id, List<User> users, Set<Status> statuses, Set<Activity> activities, String name) {
+    public Group(Long id, List<User> users, List<Status> statuses, List<Activity> activities, String name) {
         this.id = id;
         this.users = users;
         this.statuses = statuses;
         this.activities = activities;
         this.name = name;
+    }
+
+    public Group(List<User> users, String name) {
+        this.users = users;
+        this.name = name;
+    }
+
+    public Group(List<User> users, List<Status> statuses) {
+        this.users = users;
+        this.statuses = statuses;
     }
 
 }

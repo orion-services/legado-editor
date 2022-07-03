@@ -37,4 +37,14 @@ public class BaseService {
 
     @Inject
     protected ActivityRepository activityRepository;
+
+    protected static final String URL_BLOCKLY = "http://150.230.76.241:7000/?hash=";
+
+    protected static final String HASH_USER = "hashUser";
+    protected static final String HASH_CODE = "hashCode";
+    protected static final String NAME = "name";
+    protected static final String EMPTY_DATA = "Empty data, make sure you fill in correctly and try again";
+    protected static final String CODE_NOT_FOUND = "Code not found";
+    protected static final Integer LIMIT_BLOCK = 1000;
+
 }

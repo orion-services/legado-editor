@@ -75,9 +75,9 @@ public class Status {
 
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ugroup_id",referencedColumnName = "id")
+    @JoinColumn(name = "_group_id",referencedColumnName = "id")
     @JsonIgnore
-    public Group ugroup;
+    public Group _group;
 
     @ManyToMany(mappedBy="statuses", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
@@ -123,12 +123,12 @@ public class Status {
     }
 
 
-    public Group getUgroup() {
-        return this.ugroup;
+    public Group get_group() {
+        return this._group;
     }
 
-    public void setUgroup(Group ugroup) {
-        this.ugroup = ugroup;
+    public void set_group(Group group) {
+        this._group = group;
     }
 
     public List<User> getUsers() {
@@ -146,10 +146,10 @@ public class Status {
 
 
 
-    public Status(Long id, StatusEnum statusEnum, Group ugroup, List<User> users, java.util.Calendar createdDate, java.util.Calendar modifiedDate) {
+    public Status(Long id, StatusEnum statusEnum, Group _group, List<User> users, java.util.Calendar createdDate, java.util.Calendar modifiedDate) {
         this.id = id;
         this.statusEnum = statusEnum;
-        this.ugroup = ugroup;
+        this._group = _group;
         this.users = users;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
