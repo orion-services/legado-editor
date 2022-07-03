@@ -37,6 +37,8 @@ public class BaseService {
     protected static final String QUERY_HASH_USER = "hashUser";
     protected static final String QUERY_HASH_CODE = "hashCode";
     protected static final String QUERY_NAME = "name";
+    protected static final String QUERY_GROUP_ID = "_group_id";
+    protected static final String QUERY_USER_ID = "user_id";
     protected static final String EMPTY_DATA = "Empty data, make sure you fill in correctly and try again";
     protected static final String CODE_NOT_FOUND = "Code not found";
     protected static final Integer LIMIT_BLOCK = 1000;

@@ -149,7 +149,7 @@ public class EditorService extends BaseService implements EditorInterface {
     public Status checkStatus(@FormParam("namegroup") String namegroup) throws WebApplicationException{
         
         final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
-        final Status status = statusRepository.find("_group_id", group.getId()).firstResult();
+        final Status status = statusRepository.find(QUERY_GROUP_ID, group.getId()).firstResult();
 
         if(group==null || status==null){
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
@@ -172,10 +172,9 @@ public class EditorService extends BaseService implements EditorInterface {
         @FormParam("namegroup") final String namegroup) throws WebApplicationException{
 
         final User user = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
-     
         final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
-        final Activity activity = activityRepository.find("_group_id", group.getId()).firstResult();
-        final Code checkUser = codeRepository.find("user_id", user.getId()).firstResult();
+        final Activity activity = activityRepository.find(QUERY_GROUP_ID, group.getId()).firstResult();
+        final Code checkUser = codeRepository.find(QUERY_USER_ID, user.getId()).firstResult();
         Code code = codeRepository.find("order by id desc").firstResult();
         
         if(group==null || user==null || checkUser!=null || activity==null){
@@ -197,7 +196,7 @@ public class EditorService extends BaseService implements EditorInterface {
     @Override
     public List<Activity> listActivities(@FormParam("hashUser") String hashUser)throws WebApplicationException{
         final User user = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
-        final List<Activity> activity = activityRepository.list("user_id", user.getId());
+        final List<Activity> activity = activityRepository.list(QUERY_USER_ID, user.getId());
 
         if(activity==null) {
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
