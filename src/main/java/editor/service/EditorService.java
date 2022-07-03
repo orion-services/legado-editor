@@ -48,6 +48,9 @@ import editor.model.User;
 @Path("/api/v1/")
 public class EditorService extends BaseService implements EditorInterface {
 
+    private static final String HASH_USER = "hashUser";
+    private static final String EMPTY_DATA = "Empty data, make sure you fill in correctly and try again";
+
     @POST
     @Path("createUser")
     @Consumes("application/x-www-form-urlencoded")
@@ -56,27 +59,15 @@ public class EditorService extends BaseService implements EditorInterface {
     @Override
     public User createUser(@FormParam("name") final String name, @FormParam("hashUser") final String hashUser) throws WebApplicationException{
         final User user = new User();
-        final User hashCheck = userRepository.find("hashUser", hashUser).firstResult();
+        final User hashCheck = userRepository.find(HASH_USER, hashUser).firstResult();
 
-        if(name.isEmpty()) {
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
-            builder.entity("name cannot be empty");
-            Response response = builder.build();
-            throw new WebApplicationException(response);
-
-        }else if(hashCheck != null){
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
-            builder.entity("already registered user");
-            Response response = builder.build();
-            throw new WebApplicationException(response);
-
-        }else{
+        if(name.isEmpty() || hashCheck != null) {
+            throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
+        }
             user.setHashUser(hashUser);
             user.setName(name);
             userRepository.persist(user);
-        }
+
         return user;
     }
 
@@ -91,29 +82,15 @@ public class EditorService extends BaseService implements EditorInterface {
         @FormParam("hashUser") final String hashUser
     )throws WebApplicationException{
         final Group group = new Group();
-        final User user = userRepository.find("hashUser", hashUser).firstResult();
+        final User user = userRepository.find(HASH_USER, hashUser).firstResult();
         final Group groupCheck = groupRepository.find("name", namegroup).firstResult();
 
-        if(namegroup.isEmpty() || user == null) {
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
-            builder.entity("user is null");
-            Response response = builder.build();
-            throw new WebApplicationException(response);
-
-        }else if(groupCheck != null){
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
-            builder.entity("already registered group");
-            Response response = builder.build();
-            throw new WebApplicationException(response);
-
-        }else{
+        if(namegroup.isEmpty() || user == null || groupCheck != null) {
+            throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
+        }
             group.addUser(user);
             group.setName(namegroup);
             groupRepository.persist(group);
-
-        }
 
         return group;
 
@@ -129,22 +106,18 @@ public class EditorService extends BaseService implements EditorInterface {
         @FormParam("hashUser") final String hashUser, 
         @FormParam("namegroup") final String namegroup) throws WebApplicationException {
 
-        final User user = userRepository.find("hashUser", hashUser).firstResult();
+        final User user = userRepository.find(HASH_USER, hashUser).firstResult();
         final Status status = new Status();
         final Group group = groupRepository.find("name", namegroup).firstResult();
 
         if(user==null || group==null) {
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
-            builder.entity("empty data, make sure you fill in correctly and try again");
-            Response response = builder.build();
-            throw new WebApplicationException(response);
-        }else{
+            throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
+        }
             status.setStatusEnum(StatusEnum.BLOCKED);
             user.addStatuses(status);
             group.addUser(user);
             groupRepository.persist(group);
-        }
+
         return group;
     }
 
@@ -162,19 +135,15 @@ public class EditorService extends BaseService implements EditorInterface {
         
         
         if(group==null){
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
-            builder.entity("empty data, make sure you fill in correctly and try again");
-            Response response = builder.build();
-            throw new WebApplicationException(response);
-        }else{
+            throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
+        }
             createCode();
             status.setStatusEnum(StatusEnum.ACTIVE);
             group.addStatus(status);
            
             activity.setUgroup(group);
             activityRepository.persist(activity);
-        }
+
         return activity;
 
     }
@@ -197,15 +166,10 @@ public class EditorService extends BaseService implements EditorInterface {
         final Status status = statusRepository.find("ugroup_id", group.getId()).firstResult();
 
         if(group==null || status==null){
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
-            builder.entity("empty data, make sure you fill in correctly and try again");
-            Response response = builder.build();
-            throw new WebApplicationException(response);
-        }else{
+            throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
+        }
             group.getId();
             status.getStatusEnum();
-        }
 
         return status;
 
@@ -228,7 +192,7 @@ public class EditorService extends BaseService implements EditorInterface {
         @FormParam("hashUser") final String hashUser, 
         @FormParam("namegroup") final String namegroup) throws WebApplicationException{
 
-        final User user = userRepository.find("hashUser", hashUser).firstResult();
+        final User user = userRepository.find(HASH_USER, hashUser).firstResult();
      
         final Group group = groupRepository.find("name", namegroup).firstResult();
         final Activity activity = activityRepository.find("ugroup_id", group.getId()).firstResult();
@@ -236,21 +200,14 @@ public class EditorService extends BaseService implements EditorInterface {
         Code code = codeRepository.find("order by id desc").firstResult();
         
         if(group==null || user==null || checkUser!=null || activity==null){
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
-            builder.entity("empty data, make sure you fill in correctly and try again");
-            Response response = builder.build();
-            throw new WebApplicationException(response);
-        }else{
-            //incrementar ao invés de criar um novo bloco de codigo
-
+            throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
+        }
             code.setUser(user);
             activity.setUser(user);
             code.setActivity(activity);
             codeRepository.isPersistent(code);
 
             return "http://150.230.76.241:7000/?hash=" + code.getHashCode() + "&lblock=" + code.getLimitBlock();
-        } 
     }
 
     /**
@@ -266,19 +223,13 @@ public class EditorService extends BaseService implements EditorInterface {
     @Transactional
     @Override
     public List<Activity> listActivities(@FormParam("hashUser") String hashUser)throws WebApplicationException{
-        final User user = userRepository.find("hashUser", hashUser).firstResult();
+        final User user = userRepository.find(HASH_USER, hashUser).firstResult();
         final List<Activity> activity = activityRepository.list("user_id", user.getId());
 
-        if(activity==null){
-            ResponseBuilderImpl builder = new ResponseBuilderImpl();
-            builder.status(Response.Status.BAD_REQUEST);
-            builder.entity("empty data, make sure you fill in correctly and try again");
-            Response response = builder.build();
-            throw new WebApplicationException(response);
-        }else{
-            return activity;
+        if(activity==null) {
+            throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
         }
-
+            return activity;
     }
    
 
@@ -310,7 +261,6 @@ public class EditorService extends BaseService implements EditorInterface {
         Code code = new Code();
         Code lastcode = codeRepository.find("hashCode", hash).firstResult();
         try {
-
                 code.setTextCode(textCode);
                 String newHash = code.setHashCode(code.generateHash());
                 int limitBlock = lastcode.getLimitBlock() + 1000;
@@ -319,7 +269,7 @@ public class EditorService extends BaseService implements EditorInterface {
                 codeRepository.persist(code);
 
         } catch (Exception e) {
-            throw new WebApplicationException("Code not found", Response.Status.NOT_FOUND);
+            throw new ServiceException("Code not found", Response.Status.NOT_FOUND);
         }
         return code;
 
@@ -334,17 +284,8 @@ public class EditorService extends BaseService implements EditorInterface {
         try {
             code = codeRepository.find("hashCode", hash).firstResult();
         } catch (Exception e) {
-            throw new WebApplicationException("Code not found", Response.Status.NOT_FOUND);
+            throw new ServiceException("Code not found", Response.Status.NOT_FOUND);
         }
         return code;
     }
-
-  
-
-
-   //1 - um usuario pode estar em um grupo, um grupo pode ter N usuarios
-   //2 - um grupo pode fazer N atividades, uma atividade pode ser feita por um grupo
-   //3 - pegar id da atividade e anexar na URL 
-   
-
 }
