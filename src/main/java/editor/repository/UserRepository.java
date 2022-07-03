@@ -21,10 +21,12 @@ import javax.enterprise.context.ApplicationScoped;
 
 import editor.model.*;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import org.jboss.resteasy.annotations.Query;
+
+import java.util.List;
 
 @ApplicationScoped
 
 public class UserRepository implements PanacheRepository<User> {
 
-    
 }

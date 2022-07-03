@@ -18,8 +18,8 @@ package editor.model;
  */
 
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -68,7 +68,6 @@ public class Activity {
 
     public StatusType statusType = StatusType.WRITTERS_CIRCLE;
 
-
     public StatusType getStatusType() {
         return this.statusType;
     }
@@ -84,8 +83,7 @@ public class Activity {
         orphanRemoval = true)
     @JsonIgnore
     @Fetch(value = FetchMode.SUBSELECT)
-    public Set<Code> codes = new HashSet<>();
-
+    public List<Code> codes = new ArrayList<>();
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -98,20 +96,16 @@ public class Activity {
     private java.util.Calendar modifiedDate;
 
 
-
-
     public Activity() {
     }
 
-
-    public Set<Code> getCodes() {
+    public List<Code> getCodes() {
         return this.codes;
     }
 
-    public void setCodes(Set<Code> codes) {
+    public void setCodes(List<Code> codes) {
         this.codes = codes;
     }
-
 
     public Long getId() {
         return this.id;
@@ -125,16 +119,15 @@ public class Activity {
         return this.ugroup;
     }
 
-    public void setUgroup(Group ugroup) {
-        this.ugroup = ugroup;
+    public void setUgroup(Group group) {
+        this.ugroup = group;
     }
 
 
-    public Activity(Long id, Group ugroup) {
+    public Activity(Long id, Group group) {
         this.id = id;
-        this.ugroup = ugroup;
+        this.ugroup = group;
     }
-
 
     public User getUser() {
         return this.user;
@@ -149,8 +142,7 @@ public class Activity {
     code.setActivity(this);
 }
 
-
-    public Set<Code> getCode() {
+    public List<Code> getCode() {
         return this.codes;
     }
 
@@ -172,9 +164,9 @@ public class Activity {
     }
 
 
-    public Activity(Long id, Group ugroup, User user, StatusType statusType, Set<Code> codes, java.util.Calendar createdDate, java.util.Calendar modifiedDate) {
+    public Activity(Long id, Group group, User user, StatusType statusType, List<Code> codes, java.util.Calendar createdDate, java.util.Calendar modifiedDate) {
         this.id = id;
-        this.ugroup = ugroup;
+        this.ugroup = group;
         this.user = user;
         this.statusType = statusType;
         this.codes = codes;

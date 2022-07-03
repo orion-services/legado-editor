@@ -25,16 +25,22 @@ public class BaseService {
 
     @Inject
     protected UserRepository userRepository;
-
     @Inject
     protected CodeRepository codeRepository;
-
     @Inject
     protected GroupRepository groupRepository;
-
     @Inject
     protected StatusRepository statusRepository;
-
     @Inject
     protected ActivityRepository activityRepository;
+    protected static final String URL_BLOCKLY = "http://150.230.76.241:7000/?hash=";
+    protected static final String QUERY_HASH_USER = "hashUser";
+    protected static final String QUERY_HASH_CODE = "hashCode";
+    protected static final String QUERY_NAME = "name";
+    protected static final String QUERY_GROUP_ID = "ugroup_id";
+    protected static final String QUERY_USER_ID = "user_id";
+    protected static final String EMPTY_DATA = "Empty data, make sure you fill in correctly and try again";
+    protected static final String CODE_NOT_FOUND = "Code not found";
+    protected static final Integer LIMIT_BLOCK = 1000;
+
 }

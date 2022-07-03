@@ -63,7 +63,6 @@ public class Status {
         BLOCKED
     };
 
-
     public StatusEnum getStatusEnum() {
         return this.statusEnum;
     }
@@ -71,7 +70,6 @@ public class Status {
     public void setStatusEnum(StatusEnum statusEnum) {
         this.statusEnum = statusEnum;
     }
-
 
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -127,8 +125,8 @@ public class Status {
         return this.ugroup;
     }
 
-    public void setUgroup(Group ugroup) {
-        this.ugroup = ugroup;
+    public void setUgroup(Group group) {
+        this.ugroup = group;
     }
 
     public List<User> getUsers() {
@@ -146,10 +144,10 @@ public class Status {
 
 
 
-    public Status(Long id, StatusEnum statusEnum, Group ugroup, List<User> users, java.util.Calendar createdDate, java.util.Calendar modifiedDate) {
+    public Status(Long id, StatusEnum statusEnum, Group group, List<User> users, java.util.Calendar createdDate, java.util.Calendar modifiedDate) {
         this.id = id;
         this.statusEnum = statusEnum;
-        this.ugroup = ugroup;
+        this.ugroup = group;
         this.users = users;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;

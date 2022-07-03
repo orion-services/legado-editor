@@ -21,7 +21,6 @@ package editor.service;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -35,8 +34,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.jboss.resteasy.specimpl.ResponseBuilderImpl;
-
 import editor.model.Activity;
 import editor.model.Code;
 import editor.model.Group;
@@ -48,24 +45,20 @@ import editor.model.User;
 @Path("/api/v1/")
 public class EditorService extends BaseService implements EditorInterface {
 
-    private static final String HASH_USER = "hashUser";
-    private static final String EMPTY_DATA = "Empty data, make sure you fill in correctly and try again";
-
     @POST
     @Path("createUser")
-    @Consumes("application/x-www-form-urlencoded")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @Override
     public User createUser(@FormParam("name") final String name, @FormParam("hashUser") final String hashUser) throws WebApplicationException{
-        final User user = new User();
-        final User hashCheck = userRepository.find(HASH_USER, hashUser).firstResult();
+        
+        final User hashCheck = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
 
         if(name.isEmpty() || hashCheck != null) {
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
         }
-            user.setHashUser(hashUser);
-            user.setName(name);
+            final User user = new User(name, hashUser);
             userRepository.persist(user);
 
         return user;
@@ -73,7 +66,7 @@ public class EditorService extends BaseService implements EditorInterface {
 
     @POST
     @Path("createGroup")
-    @Consumes("application/x-www-form-urlencoded")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @Override
@@ -81,15 +74,14 @@ public class EditorService extends BaseService implements EditorInterface {
         @FormParam("namegroup") final String namegroup,
         @FormParam("hashUser") final String hashUser
     )throws WebApplicationException{
-        final Group group = new Group();
-        final User user = userRepository.find(HASH_USER, hashUser).firstResult();
-        final Group groupCheck = groupRepository.find("name", namegroup).firstResult();
 
-        if(namegroup.isEmpty() || user == null || groupCheck != null) {
+        final User user = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
+        final Group groupCheck = groupRepository.find(QUERY_NAME, namegroup).firstResult();
+
+        if(groupCheck != null || user == null) {
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
         }
-            group.addUser(user);
-            group.setName(namegroup);
+            final Group group = new Group(List.of(user), namegroup);
             groupRepository.persist(group);
 
         return group;
@@ -98,7 +90,7 @@ public class EditorService extends BaseService implements EditorInterface {
 
     @PUT
     @Path("joingroup")
-    @Consumes("application/x-www-form-urlencoded")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @Override
@@ -106,9 +98,9 @@ public class EditorService extends BaseService implements EditorInterface {
         @FormParam("hashUser") final String hashUser, 
         @FormParam("namegroup") final String namegroup) throws WebApplicationException {
 
-        final User user = userRepository.find(HASH_USER, hashUser).firstResult();
+        final User user = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
         final Status status = new Status();
-        final Group group = groupRepository.find("name", namegroup).firstResult();
+        final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
 
         if(user==null || group==null) {
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
@@ -123,14 +115,14 @@ public class EditorService extends BaseService implements EditorInterface {
 
     @POST
     @Path("createActivity")
-    @Consumes("application/x-www-form-urlencoded")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @Override
     public Activity createActivity(
         @FormParam("namegroup") final String namegroup) throws WebApplicationException {
         final Activity activity = new Activity();
-        final Group group = groupRepository.find("name", namegroup).firstResult();
+        final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
         final Status status = new Status();
         
         
@@ -148,12 +140,6 @@ public class EditorService extends BaseService implements EditorInterface {
 
     }
 
-        /**
-     * Returns the current locks editor Activity object of a group
-     * 
-     * @param alias : An unique name of the group
-     * @return The blocks editor Activity object 
-     */
     @GET
     @Path("/checkStatus")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -162,8 +148,8 @@ public class EditorService extends BaseService implements EditorInterface {
     @Override
     public Status checkStatus(@FormParam("namegroup") String namegroup) throws WebApplicationException{
         
-        final Group group = groupRepository.find("name", namegroup).firstResult();
-        final Status status = statusRepository.find("ugroup_id", group.getId()).firstResult();
+        final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
+        final Status status = statusRepository.find(QUERY_GROUP_ID, group.getId()).firstResult();
 
         if(group==null || status==null){
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
@@ -174,14 +160,8 @@ public class EditorService extends BaseService implements EditorInterface {
         return status;
 
     }
-    
 
-    /**
-     * Asks to participates in a group activity
-     * 
-     * @param alias : An unique name of the group
-     * @return Return a URL to participates of a activity 
-     */
+    //TODO: Refactor, a user should have a group, otherwise, has access denied
     @PUT
     @Path("/participates")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -192,14 +172,13 @@ public class EditorService extends BaseService implements EditorInterface {
         @FormParam("hashUser") final String hashUser, 
         @FormParam("namegroup") final String namegroup) throws WebApplicationException{
 
-        final User user = userRepository.find(HASH_USER, hashUser).firstResult();
-     
-        final Group group = groupRepository.find("name", namegroup).firstResult();
-        final Activity activity = activityRepository.find("ugroup_id", group.getId()).firstResult();
-        final Code checkUser = codeRepository.find("user_id", user.getId()).firstResult();
+        final User user = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
+        final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
+        final Activity activity = activityRepository.find(QUERY_GROUP_ID, group.getId()).firstResult();
+        final Code checkUserCode = codeRepository.find(QUERY_USER_ID, user.getId()).firstResult();
         Code code = codeRepository.find("order by id desc").firstResult();
         
-        if(group==null || user==null || checkUser!=null || activity==null){
+        if(group==null || user==null || checkUserCode!=null || activity==null){
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
         }
             code.setUser(user);
@@ -207,15 +186,9 @@ public class EditorService extends BaseService implements EditorInterface {
             code.setActivity(activity);
             codeRepository.isPersistent(code);
 
-            return "http://150.230.76.241:7000/?hash=" + code.getHashCode() + "&lblock=" + code.getLimitBlock();
+            return URL_BLOCKLY + code.getHashCode() + "&lblock=" + code.getLimitBlock();
     }
 
-    /**
-     * Lists all current activities of an user
-     * 
-     * @param discriminator : The Discord discriminator 
-     * @return Return a list of current activity of a user in all groups
-     */
     @POST
     @Path("/listActivities")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -223,8 +196,8 @@ public class EditorService extends BaseService implements EditorInterface {
     @Transactional
     @Override
     public List<Activity> listActivities(@FormParam("hashUser") String hashUser)throws WebApplicationException{
-        final User user = userRepository.find(HASH_USER, hashUser).firstResult();
-        final List<Activity> activity = activityRepository.list("user_id", user.getId());
+        final User user = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
+        final List<Activity> activity = activityRepository.list(QUERY_USER_ID, user.getId());
 
         if(activity==null) {
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
@@ -235,16 +208,12 @@ public class EditorService extends BaseService implements EditorInterface {
 
     @POST
     @Path("createCode")
-    @Consumes("application/x-www-form-urlencoded")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Code createCode() throws WebApplicationException {
-        Code code = new Code();
-        code.setTextCode("");
 
-            String hash = code.setHashCode(code.generateHash());
-            code.setHashCode(hash);
-            code.setLimitBlock(1000);;
+            Code code = new Code(null, null, LIMIT_BLOCK);
             codeRepository.persist(code);
 
         return code;
@@ -253,23 +222,23 @@ public class EditorService extends BaseService implements EditorInterface {
 
     @POST
     @Path("incrementCode/{hash}")
-    @Consumes("application/x-www-form-urlencoded")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Code incrementCode(@PathParam("hash") final String hash, @FormParam("textCode") final String textCode) throws WebApplicationException {
 
         Code code = new Code();
-        Code lastcode = codeRepository.find("hashCode", hash).firstResult();
+        Code lastcode = codeRepository.find(QUERY_HASH_CODE, hash).firstResult();
         try {
                 code.setTextCode(textCode);
                 String newHash = code.setHashCode(code.generateHash());
-                int limitBlock = lastcode.getLimitBlock() + 1000;
+                int limitBlock = lastcode.getLimitBlock() + LIMIT_BLOCK;
                 code.setHashCode(newHash);
                 code.setLimitBlock(limitBlock);
                 codeRepository.persist(code);
 
         } catch (Exception e) {
-            throw new ServiceException("Code not found", Response.Status.NOT_FOUND);
+            throw new ServiceException(CODE_NOT_FOUND, Response.Status.NOT_FOUND);
         }
         return code;
 
@@ -282,9 +251,9 @@ public class EditorService extends BaseService implements EditorInterface {
     public Code loadCode(@PathParam("hash") final String hash) throws WebApplicationException {
         Code code = new Code();
         try {
-            code = codeRepository.find("hashCode", hash).firstResult();
+            code = codeRepository.find(QUERY_HASH_CODE, hash).firstResult();
         } catch (Exception e) {
-            throw new ServiceException("Code not found", Response.Status.NOT_FOUND);
+            throw new ServiceException(CODE_NOT_FOUND, Response.Status.NOT_FOUND);
         }
         return code;
     }
