@@ -1,8 +1,6 @@
 package editor.service;
 
 
-import java.util.Arrays;
-
 /**
  * Copyright 2021 Blockly Service @ https://github.com/orion-services/blockly
  *
@@ -55,7 +53,7 @@ public class EditorService extends BaseService implements EditorInterface {
     @Override
     public User createUser(@FormParam("name") final String name, @FormParam("hashUser") final String hashUser) throws WebApplicationException{
         
-        final User hashCheck = userRepository.find(HASH_USER, hashUser).firstResult();
+        final User hashCheck = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
 
         if(name.isEmpty() || hashCheck != null) {
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
@@ -77,8 +75,8 @@ public class EditorService extends BaseService implements EditorInterface {
         @FormParam("hashUser") final String hashUser
     )throws WebApplicationException{
 
-        final User user = userRepository.find(HASH_USER, hashUser).firstResult();
-        final Group groupCheck = groupRepository.find(NAME, namegroup).firstResult();
+        final User user = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
+        final Group groupCheck = groupRepository.find(QUERY_NAME, namegroup).firstResult();
 
         if(namegroup.isEmpty() || user == null || groupCheck != null) {
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
@@ -100,9 +98,9 @@ public class EditorService extends BaseService implements EditorInterface {
         @FormParam("hashUser") final String hashUser, 
         @FormParam("namegroup") final String namegroup) throws WebApplicationException {
 
-        final User user = userRepository.find(HASH_USER, hashUser).firstResult();
+        final User user = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
         final Status status = new Status();
-        final Group group = groupRepository.find(NAME, namegroup).firstResult();
+        final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
 
         if(user==null || group==null) {
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
@@ -124,7 +122,7 @@ public class EditorService extends BaseService implements EditorInterface {
     public Activity createActivity(
         @FormParam("namegroup") final String namegroup) throws WebApplicationException {
         final Activity activity = new Activity();
-        final Group group = groupRepository.find(NAME, namegroup).firstResult();
+        final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
         final Status status = new Status();
         
         
@@ -142,12 +140,6 @@ public class EditorService extends BaseService implements EditorInterface {
 
     }
 
-        /**
-     * Returns the current locks editor Activity object of a group
-     * 
-     * @param alias : An unique name of the group
-     * @return The blocks editor Activity object 
-     */
     @GET
     @Path("/checkStatus")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -156,7 +148,7 @@ public class EditorService extends BaseService implements EditorInterface {
     @Override
     public Status checkStatus(@FormParam("namegroup") String namegroup) throws WebApplicationException{
         
-        final Group group = groupRepository.find(NAME, namegroup).firstResult();
+        final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
         final Status status = statusRepository.find("_group_id", group.getId()).firstResult();
 
         if(group==null || status==null){
@@ -168,14 +160,7 @@ public class EditorService extends BaseService implements EditorInterface {
         return status;
 
     }
-    
 
-    /**
-     * Asks to participates in a group activity
-     * 
-     * @param alias : An unique name of the group
-     * @return Return a URL to participates of a activity 
-     */
     @PUT
     @Path("/participates")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -186,9 +171,9 @@ public class EditorService extends BaseService implements EditorInterface {
         @FormParam("hashUser") final String hashUser, 
         @FormParam("namegroup") final String namegroup) throws WebApplicationException{
 
-        final User user = userRepository.find(HASH_USER, hashUser).firstResult();
+        final User user = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
      
-        final Group group = groupRepository.find(NAME, namegroup).firstResult();
+        final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
         final Activity activity = activityRepository.find("_group_id", group.getId()).firstResult();
         final Code checkUser = codeRepository.find("user_id", user.getId()).firstResult();
         Code code = codeRepository.find("order by id desc").firstResult();
@@ -204,12 +189,6 @@ public class EditorService extends BaseService implements EditorInterface {
             return URL_BLOCKLY + code.getHashCode() + "&lblock=" + code.getLimitBlock();
     }
 
-    /**
-     * Lists all current activities of an user
-     * 
-     * @param discriminator : The Discord discriminator 
-     * @return Return a list of current activity of a user in all groups
-     */
     @POST
     @Path("/listActivities")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -217,7 +196,7 @@ public class EditorService extends BaseService implements EditorInterface {
     @Transactional
     @Override
     public List<Activity> listActivities(@FormParam("hashUser") String hashUser)throws WebApplicationException{
-        final User user = userRepository.find(HASH_USER, hashUser).firstResult();
+        final User user = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
         final List<Activity> activity = activityRepository.list("user_id", user.getId());
 
         if(activity==null) {
@@ -235,7 +214,7 @@ public class EditorService extends BaseService implements EditorInterface {
     public Code createCode() throws WebApplicationException {
         Code code = new Code();
 
-            Code codeSave = new Code("", "hash", LIMIT_BLOCK);
+            Code codeSave = new Code(null, null, LIMIT_BLOCK);
             codeRepository.persist(code);
 
         return code;
@@ -250,7 +229,7 @@ public class EditorService extends BaseService implements EditorInterface {
     public Code incrementCode(@PathParam("hash") final String hash, @FormParam("textCode") final String textCode) throws WebApplicationException {
 
         Code code = new Code();
-        Code lastcode = codeRepository.find(HASH_CODE, hash).firstResult();
+        Code lastcode = codeRepository.find(QUERY_HASH_CODE, hash).firstResult();
         try {
                 code.setTextCode(textCode);
                 String newHash = code.setHashCode(code.generateHash());
@@ -273,7 +252,7 @@ public class EditorService extends BaseService implements EditorInterface {
     public Code loadCode(@PathParam("hash") final String hash) throws WebApplicationException {
         Code code = new Code();
         try {
-            code = codeRepository.find(HASH_CODE, hash).firstResult();
+            code = codeRepository.find(QUERY_HASH_CODE, hash).firstResult();
         } catch (Exception e) {
             throw new ServiceException(CODE_NOT_FOUND, Response.Status.NOT_FOUND);
         }
