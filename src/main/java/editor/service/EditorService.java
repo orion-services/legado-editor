@@ -58,7 +58,7 @@ public class EditorService extends BaseService implements EditorInterface {
         if(name.isEmpty() || hashCheck != null) {
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
         }
-            final User user = new User(hashUser, name);
+            final User user = new User(name, hashUser);
             userRepository.persist(user);
 
         return user;
@@ -78,7 +78,7 @@ public class EditorService extends BaseService implements EditorInterface {
         final User user = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
         final Group groupCheck = groupRepository.find(QUERY_NAME, namegroup).firstResult();
 
-        if(namegroup.isEmpty() || user == null || groupCheck != null) {
+        if(groupCheck != null || user == null) {
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
         }
             final Group group = new Group(List.of(user), namegroup);
@@ -133,7 +133,7 @@ public class EditorService extends BaseService implements EditorInterface {
             status.setStatusEnum(StatusEnum.ACTIVE);
             group.addStatus(status);
            
-            activity.set_group(group);
+            activity.setUgroup(group);
             activityRepository.persist(activity);
 
         return activity;
@@ -161,6 +161,7 @@ public class EditorService extends BaseService implements EditorInterface {
 
     }
 
+    //TODO: Refactor, a user should have a group, otherwise, has access denied
     @PUT
     @Path("/participates")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -174,10 +175,10 @@ public class EditorService extends BaseService implements EditorInterface {
         final User user = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
         final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
         final Activity activity = activityRepository.find(QUERY_GROUP_ID, group.getId()).firstResult();
-        final Code checkUser = codeRepository.find(QUERY_USER_ID, user.getId()).firstResult();
+        final Code checkUserCode = codeRepository.find(QUERY_USER_ID, user.getId()).firstResult();
         Code code = codeRepository.find("order by id desc").firstResult();
         
-        if(group==null || user==null || checkUser!=null || activity==null){
+        if(group==null || user==null || checkUserCode!=null || activity==null){
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
         }
             code.setUser(user);
@@ -211,9 +212,8 @@ public class EditorService extends BaseService implements EditorInterface {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Code createCode() throws WebApplicationException {
-        Code code = new Code();
 
-            Code codeSave = new Code(null, null, LIMIT_BLOCK);
+            Code code = new Code(null, null, LIMIT_BLOCK);
             codeRepository.persist(code);
 
         return code;

@@ -53,9 +53,9 @@ public class Activity {
     private Long id;
     
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "_group_id",referencedColumnName = "id")
+    @JoinColumn(name = "ugroup_id",referencedColumnName = "id")
     @JsonIgnore
-    public Group _group;
+    public Group ugroup;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
@@ -67,7 +67,6 @@ public class Activity {
     };
 
     public StatusType statusType = StatusType.WRITTERS_CIRCLE;
-
 
     public StatusType getStatusType() {
         return this.statusType;
@@ -86,7 +85,6 @@ public class Activity {
     @Fetch(value = FetchMode.SUBSELECT)
     public List<Code> codes = new ArrayList<>();
 
-
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "createdDate")
@@ -98,11 +96,8 @@ public class Activity {
     private java.util.Calendar modifiedDate;
 
 
-
-
     public Activity() {
     }
-
 
     public List<Code> getCodes() {
         return this.codes;
@@ -112,7 +107,6 @@ public class Activity {
         this.codes = codes;
     }
 
-
     public Long getId() {
         return this.id;
     }
@@ -121,20 +115,19 @@ public class Activity {
         this.id = id;
     }
 
-    public Group get_group() {
-        return this._group;
+    public Group getUgroup() {
+        return this.ugroup;
     }
 
-    public void set_group(Group group) {
-        this._group = group;
+    public void setUgroup(Group group) {
+        this.ugroup = group;
     }
 
 
-    public Activity(Long id, Group _group) {
+    public Activity(Long id, Group group) {
         this.id = id;
-        this._group = _group;
+        this.ugroup = group;
     }
-
 
     public User getUser() {
         return this.user;
@@ -148,7 +141,6 @@ public class Activity {
         codes.add(code);
     code.setActivity(this);
 }
-
 
     public List<Code> getCode() {
         return this.codes;
@@ -172,9 +164,9 @@ public class Activity {
     }
 
 
-    public Activity(Long id, Group _group, User user, StatusType statusType, List<Code> codes, java.util.Calendar createdDate, java.util.Calendar modifiedDate) {
+    public Activity(Long id, Group group, User user, StatusType statusType, List<Code> codes, java.util.Calendar createdDate, java.util.Calendar modifiedDate) {
         this.id = id;
-        this._group = _group;
+        this.ugroup = group;
         this.user = user;
         this.statusType = statusType;
         this.codes = codes;

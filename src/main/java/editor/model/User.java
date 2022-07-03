@@ -64,15 +64,13 @@ public class User {
     @Column(unique = true)
     private String hashUser;
 
-
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)
-    @JoinTable(name="user_group",
+    @JoinTable(name="user_ugroup",
                joinColumns={@JoinColumn(name="user_id", referencedColumnName = "id")},
-               inverseJoinColumns={@JoinColumn(name="_group_id", referencedColumnName = "id")})
+               inverseJoinColumns={@JoinColumn(name="ugroup_id", referencedColumnName = "id")})
     @Fetch(value = FetchMode.SUBSELECT)
     @JsonIgnore
-    private List<Group> _groups = new ArrayList<>();
-
+    private List<Group> ugroups = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)
     @JoinTable(name="user_status",
@@ -82,7 +80,6 @@ public class User {
     @JsonIgnore
     private List<Status> statuses = new ArrayList<>();
 
-
     @OneToMany(
         mappedBy = "user", 
         cascade = CascadeType.ALL, 
@@ -90,9 +87,7 @@ public class User {
         orphanRemoval = true)
     @JsonIgnore
     @Fetch(value = FetchMode.SUBSELECT)
-    public Set<Activity> activities = new HashSet<>();
-
-
+    public List<Activity> activities = new ArrayList<>();
 
     @OneToMany(
         mappedBy = "user", 
@@ -101,10 +96,7 @@ public class User {
         orphanRemoval = true)    
     @JsonIgnore
     @Fetch(value = FetchMode.SUBSELECT)
-    public Set<Code> codes = new HashSet<>();
-
-
-
+    public List<Code> codes = new ArrayList<>();
 
 
     public String generateHash() {
@@ -116,7 +108,6 @@ public class User {
         return hash;
     }
 
-
     public String getEmail() {
         return this.email;
     }
@@ -125,14 +116,13 @@ public class User {
         this.email = email;
     }
 
-    public Set<Code> getCodes() {
+    public List<Code> getCodes() {
         return this.codes;
     }
 
-    public void setCodes(Set<Code> codes) {
+    public void setCodes(List<Code> codes) {
         this.codes = codes;
     }
-
 
 
     public String getHashUser() {
@@ -153,11 +143,11 @@ public class User {
     }
 
 
-    public Set<Activity> getActivities() {
+    public List<Activity> getActivities() {
         return this.activities;
     }
 
-    public void setActivities(Set<Activity> activities) {
+    public void setActivities(List<Activity> activities) {
         this.activities = activities;
     }
 
@@ -189,17 +179,17 @@ public class User {
     }
 
 
-    public List<Group> get_groups() {
-        return this._groups;
+    public List<Group> getUgroups() {
+        return this.ugroups;
     }
 
-    public void set_groups(List<Group> groups) {
-        this._groups = groups;
+    public void setUgroups(List<Group> groups) {
+        this.ugroups = groups;
     }
 
 
-    public void add_group(Group group) {
-        this._groups.add(group);
+    public void addUgroup(Group group) {
+        this.ugroups.add(group);
         group.getUsers().add(this);
     }
 
@@ -218,14 +208,12 @@ public class User {
         this.statuses = statuses;
     }
 
-
-
-    public User(Long id, String name, String email, String hashUser, List<Group> _groups, List<Status> statuses, Set<Activity> activities, Set<Code> codes) {
+    public User(Long id, String name, String email, String hashUser, List<Group> groups, List<Status> statuses, List<Activity> activities, List<Code> codes) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.hashUser = hashUser;
-        this._groups = _groups;
+        this.ugroups = groups;
         this.statuses = statuses;
         this.activities = activities;
         this.codes = codes;

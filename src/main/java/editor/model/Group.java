@@ -43,21 +43,21 @@ import org.hibernate.annotations.FetchMode;
 @Entity
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(Group.class)
-@SequenceGenerator(name="_group_seq", sequenceName = "_group_seq",initialValue = 1, allocationSize = 1)
-@Table(name = "_group")
+@SequenceGenerator(name="ugroup_seq", sequenceName = "ugroup_seq",initialValue = 1, allocationSize = 1)
+@Table(name = "ugroup")
 public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(mappedBy="_groups", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)
+    @ManyToMany(mappedBy="ugroups", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    @JsonIgnoreProperties("_groups")
+    @JsonIgnoreProperties("ugroups")
     private List<User> users= new ArrayList<>();
 
     @OneToMany(
-        mappedBy = "_group",
+        mappedBy = "ugroup",
         cascade = CascadeType.ALL, 
         fetch = FetchType.EAGER, 
         orphanRemoval = true)
@@ -67,7 +67,7 @@ public class Group {
 
 
     @OneToMany(
-        mappedBy = "_group",
+        mappedBy = "ugroup",
         cascade = CascadeType.ALL, 
         fetch = FetchType.EAGER, 
         orphanRemoval = true)
@@ -110,17 +110,17 @@ public class Group {
 
     public void addUser(User user) {
             this.users.add(user);
-        user.get_groups().add(this);
+        user.getUgroups().add(this);
     }
 
     public void addActivity(Activity activity){
             activities.add(activity);
-        activity.set_group(this);
+        activity.setUgroup(this);
     }
     
     public void addStatus(Status status){
             statuses.add(status);
-        status.set_group(this);
+        status.setUgroup(this);
     }
 
     public List<Status> getStatuses() {

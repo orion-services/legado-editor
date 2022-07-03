@@ -63,7 +63,6 @@ public class Status {
         BLOCKED
     };
 
-
     public StatusEnum getStatusEnum() {
         return this.statusEnum;
     }
@@ -73,11 +72,10 @@ public class Status {
     }
 
 
-
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "_group_id",referencedColumnName = "id")
+    @JoinColumn(name = "ugroup_id",referencedColumnName = "id")
     @JsonIgnore
-    public Group _group;
+    public Group ugroup;
 
     @ManyToMany(mappedBy="statuses", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
@@ -123,12 +121,12 @@ public class Status {
     }
 
 
-    public Group get_group() {
-        return this._group;
+    public Group getUgroup() {
+        return this.ugroup;
     }
 
-    public void set_group(Group group) {
-        this._group = group;
+    public void setUgroup(Group group) {
+        this.ugroup = group;
     }
 
     public List<User> getUsers() {
@@ -146,10 +144,10 @@ public class Status {
 
 
 
-    public Status(Long id, StatusEnum statusEnum, Group _group, List<User> users, java.util.Calendar createdDate, java.util.Calendar modifiedDate) {
+    public Status(Long id, StatusEnum statusEnum, Group group, List<User> users, java.util.Calendar createdDate, java.util.Calendar modifiedDate) {
         this.id = id;
         this.statusEnum = statusEnum;
-        this._group = _group;
+        this.ugroup = group;
         this.users = users;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;

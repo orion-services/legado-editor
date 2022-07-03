@@ -48,7 +48,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "code")
 public class Code{
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -62,7 +61,6 @@ public class Code{
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     @JsonBackReference
     public User user;
-
     
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -79,12 +77,8 @@ public class Code{
 
     private int limitBlock;
 
-
-
     @Column(unique = true)
     private String hashCode;
-
-
 
     public String generateHash() {
         SecureRandom random = new SecureRandom();
@@ -109,9 +103,7 @@ public class Code{
 
     public void setUser(User user) {
         this.user = user;
-
     }
-
 
     public java.util.Calendar getCreatedDate() {
         return this.createdDate;
@@ -129,7 +121,6 @@ public class Code{
         this.modifiedDate = modifiedDate;
     }
 
-    
     public Activity getActivity() {
         return this.activity;
     }
@@ -138,7 +129,6 @@ public class Code{
         this.activity = activity;
     }
 
-
     public int getLimitBlock() {
         return this.limitBlock;
     }
@@ -146,7 +136,6 @@ public class Code{
     public void setLimitBlock(int limitBlock) {
         this.limitBlock = limitBlock;
     }
-
 
 
     public Long getId(Long idCode) {
@@ -165,10 +154,8 @@ public class Code{
         this.textCode = textCode;
     }
 
-
     public Code() {
     }
-
 
     public Code(Long id, Activity activity, User user, java.util.Calendar createdDate, java.util.Calendar modifiedDate, String textCode, int limitBlock, String hashCode) {
         this.id = id;
