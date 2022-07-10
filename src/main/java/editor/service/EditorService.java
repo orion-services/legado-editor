@@ -81,7 +81,9 @@ public class EditorService extends BaseService implements EditorInterface {
         if(groupCheck != null || user == null) {
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
         }
-            final Group group = new Group(List.of(user), namegroup);
+        final Group group = new Group();
+            group.addUser(user);
+            group.setName(namegroup);
             groupRepository.persist(group);
 
         return group;
@@ -176,9 +178,10 @@ public class EditorService extends BaseService implements EditorInterface {
         final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
         final Activity activity = activityRepository.find(QUERY_GROUP_ID, group.getId()).firstResult();
         final Code checkUserCode = codeRepository.find(QUERY_USER_ID, user.getId()).firstResult();
+        final User userCheck = userJPARepository.findByUserAndGroup(user.getId(), group.getId());
         Code code = codeRepository.find("order by id desc").firstResult();
         
-        if(group==null || user==null || checkUserCode!=null || activity==null){
+        if(group==null || user==null || checkUserCode!=null || activity==null || userCheck==null){
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
         }
             code.setUser(user);
