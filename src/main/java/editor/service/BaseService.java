@@ -33,6 +33,8 @@ public class BaseService {
     protected StatusRepository statusRepository;
     @Inject
     protected ActivityRepository activityRepository;
+    @Inject
+    protected UserJPARepository userJPARepository;
     protected static final String URL_BLOCKLY = "http://150.230.76.241:7000/?hash=";
     protected static final String QUERY_HASH_USER = "hashUser";
     protected static final String QUERY_HASH_CODE = "hashCode";
