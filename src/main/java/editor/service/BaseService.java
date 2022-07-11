@@ -18,13 +18,10 @@ package editor.service;
  */
 
 import javax.inject.Inject;
-import javax.ws.rs.core.Response;
 
-import editor.model.User;
 import editor.repository.*;
 
 public class BaseService {
-
     @Inject
     protected UserRepository userRepository;
     @Inject
@@ -51,6 +48,4 @@ public class BaseService {
     protected static final String ACTIVITY_NOT_EXIST = "Activity not exist";
     protected static final String CODE_NOT_FOUND = "Code not found";
     protected static final Integer LIMIT_BLOCK = 50;
-
-
 }

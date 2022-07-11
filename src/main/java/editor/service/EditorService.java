@@ -40,7 +40,6 @@ import editor.model.Group;
 import editor.model.Status;
 import editor.model.Status.StatusEnum;
 import editor.model.User;
-
 @RequestScoped
 @Path("/api/v1/")
 public class EditorService extends BaseService implements EditorInterface {
@@ -125,8 +124,8 @@ public class EditorService extends BaseService implements EditorInterface {
     @Override
     public Status checkStatus(@FormParam("namegroup") String namegroup){
         final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
+        ServiceException.checkStatusException(group);
         final Status status = statusRepository.find(QUERY_GROUP_ID, group.getId()).firstResult();
-
         ServiceException.checkStatusException(group, status);
         return status;
     }

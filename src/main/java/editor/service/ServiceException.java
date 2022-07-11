@@ -97,6 +97,11 @@ public class ServiceException extends WebApplicationException {
             throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
         }
     }
+    public static void checkStatusException(Group group) {
+        if(group==null){
+            throw new ServiceException(GROUP_NOT_EXIST, Response.Status.BAD_REQUEST);
+        }
+    }
 
     public static void participatesException(Group group, User user, Code checkUserCode, Activity activity, User userCheck) {
         if(group==null){
