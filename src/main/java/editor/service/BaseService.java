@@ -50,7 +50,7 @@ public class BaseService {
     protected static final String GROUP_NOT_EXIST = "Group not exist";
     protected static final String ACTIVITY_NOT_EXIST = "Activity not exist";
     protected static final String CODE_NOT_FOUND = "Code not found";
-    protected static final Integer LIMIT_BLOCK = 1000;
+    protected static final Integer LIMIT_BLOCK = 50;
 
 
 }
