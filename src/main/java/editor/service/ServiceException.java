@@ -17,11 +17,19 @@
 
 package editor.service;
 
+import editor.model.Activity;
+import editor.model.Code;
+import editor.model.Group;
+import editor.model.User;
+
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
+import static editor.service.BaseService.*;
 
 /**
  * Service exception
@@ -47,5 +55,71 @@ public class ServiceException extends WebApplicationException {
         .build();
     }
 
+    public static void createUserException(String name, User hashCheck){
+
+        if(name.isEmpty()) {
+            throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
+        }
+        if(hashCheck != null) {
+            throw new ServiceException(USER_ALREADY, Response.Status.BAD_REQUEST);
+        }
+    }
+
+    public static void createGroupException(Group groupCheck, User user) {
+        if(groupCheck != null) {
+            throw new ServiceException(GROUP_ALREADY, Response.Status.BAD_REQUEST);
+        }
+        if(user == null) {
+            throw new ServiceException(USER_NOT_EXIST, Response.Status.BAD_REQUEST);
+        }
+    }
+
+    public static void joinGroupException(User user, Group group) {
+        if(user==null) {
+            throw new ServiceException(USER_NOT_EXIST, Response.Status.BAD_REQUEST);
+        }
+        if(group==null) {
+            throw new ServiceException(GROUP_NOT_EXIST, Response.Status.BAD_REQUEST);
+        }
+    }
+
+    public static void createActivityException(Group group) {
+        if(group==null){
+            throw new ServiceException(GROUP_NOT_EXIST, Response.Status.BAD_REQUEST);
+        }
+    }
+
+    public static void checkStatusException(Group group, editor.model.Status status) {
+        if(group==null){
+            throw new ServiceException(GROUP_NOT_EXIST, Response.Status.BAD_REQUEST);
+        }
+        if(status==null){
+            throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
+        }
+    }
+
+    public static void participatesException(Group group, User user, Code checkUserCode, Activity activity, User userCheck) {
+        if(group==null){
+            throw new ServiceException(GROUP_NOT_EXIST, Response.Status.BAD_REQUEST);
+        }
+        if(user==null){
+            throw new ServiceException(USER_NOT_EXIST, Response.Status.BAD_REQUEST);
+        }
+        if(checkUserCode!=null){
+            throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
+        }
+        if(activity==null){
+            throw new ServiceException(ACTIVITY_NOT_EXIST, Response.Status.BAD_REQUEST);
+        }
+        if(userCheck==null){
+            throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
+        }
+    }
+
+    public static void listActivitiesException(List<Activity> activity) {
+        if(activity==null) {
+            throw new ServiceException(EMPTY_DATA, Response.Status.BAD_REQUEST);
+        }
+    }
 }
 

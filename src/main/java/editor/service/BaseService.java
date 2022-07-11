@@ -18,7 +18,9 @@ package editor.service;
  */
 
 import javax.inject.Inject;
+import javax.ws.rs.core.Response;
 
+import editor.model.User;
 import editor.repository.*;
 
 public class BaseService {
@@ -42,7 +44,13 @@ public class BaseService {
     protected static final String QUERY_GROUP_ID = "ugroup_id";
     protected static final String QUERY_USER_ID = "user_id";
     protected static final String EMPTY_DATA = "Empty data, make sure you fill in correctly and try again";
+    protected static final String USER_ALREADY = "User already registered";
+    protected static final String GROUP_ALREADY = "Group already registered";
+    protected static final String USER_NOT_EXIST = "User not exist";
+    protected static final String GROUP_NOT_EXIST = "Group not exist";
+    protected static final String ACTIVITY_NOT_EXIST = "Activity not exist";
     protected static final String CODE_NOT_FOUND = "Code not found";
     protected static final Integer LIMIT_BLOCK = 1000;
+
 
 }
