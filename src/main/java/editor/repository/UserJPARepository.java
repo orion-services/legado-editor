@@ -25,7 +25,6 @@ import org.springframework.data.repository.query.Param;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-
 public interface UserJPARepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u JOIN u.ugroups g WHERE u.id = :user_id AND g.id = :ugroup_id")

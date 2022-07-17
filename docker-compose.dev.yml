@@ -18,7 +18,6 @@ services:
             - MYSQL_DATABASE=editor-service
             - MYSQL_USER=editor-service
             - MYSQL_PASSWORD=editor-service
-
     phpMyAdmin:
             image: phpmyadmin/phpmyadmin:latest
             container_name: editor-phpmyadmin

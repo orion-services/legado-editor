@@ -117,12 +117,12 @@ public class EditorService extends BaseService implements EditorInterface {
     }
 
     @GET
-    @Path("/checkStatus")
+    @Path("checkStatus")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @Override
-    public Status checkStatus(@FormParam("namegroup") String namegroup){
+    public Status checkStatus(@FormParam("namegroup") final String namegroup){
         final Group group = groupRepository.find(QUERY_NAME, namegroup).firstResult();
         ServiceException.checkStatusException(group);
         final Status status = statusRepository.find(QUERY_GROUP_ID, group.getId()).firstResult();
@@ -131,7 +131,7 @@ public class EditorService extends BaseService implements EditorInterface {
     }
 
     @PUT
-    @Path("/participates")
+    @Path("participates")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_PLAIN)
     @Transactional
@@ -153,13 +153,13 @@ public class EditorService extends BaseService implements EditorInterface {
             return URL_BLOCKLY + code.getHashCode() + "&lblock=" + code.getLimitBlock();
     }
 
-    @POST
-    @Path("/listActivities")
+    @GET
+    @Path("listActivities")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @Override
-    public List<Activity> listActivities(@FormParam("hashUser") String hashUser){
+    public List<Activity> listActivities(@FormParam("hashUser") final String hashUser){
         final User user = userRepository.find(QUERY_HASH_USER, hashUser).firstResult();
         final List<Activity> activity = activityRepository.list(QUERY_USER_ID, user.getId());
 
@@ -206,7 +206,7 @@ public class EditorService extends BaseService implements EditorInterface {
     }
 
     @GET
-    @Path("/loadCode/{hash}")
+    @Path("loadCode/{hash}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Code loadCode(@PathParam("hash") final String hash){
