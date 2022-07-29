@@ -6,7 +6,6 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 
 ## Run application
 ./mvnw package
-docker-compose up -d
 
 ## Running the application in dev mode
 
