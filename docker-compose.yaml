@@ -15,6 +15,8 @@ services:
             - MYSQL_DATABASE=editor-service
             - MYSQL_USER=editor-service
             - MYSQL_PASSWORD=editor-service
+        networks:
+        - app-network
 
     service:
             build:
@@ -28,10 +30,14 @@ services:
                 - 8080:8080
             environment:
                 quarkus.datasource.jdbc.url: "jdbc:mysql://db:3306/editor-service"
+            networks:
+            - app-network
 
     bot:
         image: guismoreira/editor-bot:latest
         container_name: editor-bot
+        networks:
+        - app-network
             
     app:
         container_name: editor-blockly
@@ -40,3 +46,9 @@ services:
             dockerfile: Dockerfile
         ports:
             - '7000:7000'
+        networks:
+        - app-network
+
+networks:    
+  app-network:
+    external: true
