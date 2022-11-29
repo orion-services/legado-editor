@@ -21,7 +21,6 @@ package editor.service;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -232,10 +231,9 @@ public class EditorService extends BaseService implements EditorInterface {
      
         final Group group = groupRepository.find("name", namegroup).firstResult();
         final Activity activity = activityRepository.find("ugroup_id", group.getId()).firstResult();
-        final Code checkUser = codeRepository.find("user_id", user.getId()).firstResult();
         Code code = codeRepository.find("order by id desc").firstResult();
         
-        if(group==null || user==null || checkUser!=null || activity==null){
+        if(group==null || user==null || activity==null){
             ResponseBuilderImpl builder = new ResponseBuilderImpl();
             builder.status(Response.Status.BAD_REQUEST);
             builder.entity("empty data, make sure you fill in correctly and try again");
